@@ -10,6 +10,15 @@ const Segreteria = require('./models/segreteria.js');
 
 router.post('/prenotaGuida', (req,res)=>{
     //Prenota una guida
+    var slot = new Date(req.body.slot);
+    slot.setTime( slot.getTime() - new Date().getTimezoneOffset()*60*1000);
+    var prenotazione = new Prenotazione({
+        slot: slot,
+        id_studente: req.query.id_studente,
+        id_istruttore: req.body.id_istruttore,
+    });
+    console.log(prenotazione);
+    
 });
 
 router.delete('/annullaGuida', (req,res)=>{
