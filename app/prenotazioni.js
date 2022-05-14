@@ -19,6 +19,14 @@ router.post('/prenotaGuida', (req,res)=>{
     });
     console.log(prenotazione);
     
+    prenotazione.save()
+    .then(()=>{
+        res.status(201).json({message: "guida prenotata con successo"});
+    })
+    .catch((err)=>{ 
+        console.log("errore:"+err);
+        res.status(404).json({error: ''+err});
+    });
 });
 
 router.delete('/annullaGuida', (req,res)=>{
