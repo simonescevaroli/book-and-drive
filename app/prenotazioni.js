@@ -30,7 +30,15 @@ router.post('/prenotaGuida', (req,res)=>{
 });
 
 router.delete('/annullaGuida', (req,res)=>{
-    //Annulla una guida
+    console.log("annulla guida");
+    Prenotazione.deleteOne({_id: req.query._id})
+    .then(()=>{
+        console.log(res.status(200).json({message: "guida cancellata con successo"}));
+    })
+    .catch((err)=>{
+        res.status(500).json({
+            error: ''+err})
+    })
 });
 
 
