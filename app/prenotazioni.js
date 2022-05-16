@@ -29,7 +29,7 @@ router.post('/prenotaGuida',async (req,res)=>{
         username_istruttore: req.body.username_istruttore,
     });
     prenotazione.save()
-    .then((prentoazione)=>{
+    .then((prenotazione)=>{
         res.status(201).json({
             message: "guida prenotata con successo",
             self:'/api/v1/'+prenotazione._id
@@ -44,6 +44,15 @@ router.post('/prenotaGuida',async (req,res)=>{
 
 router.delete('/annullaGuida', (req,res)=>{
     //annulla una prenotazione
+    console.log("annulla guida");
+    Prenotazione.deleteOne({_id: req.query._id})
+    .then(()=>{
+        console.log(res.status(200).json({message: "guida cancellata con successo"}));
+    })
+    .catch((err)=>{
+        res.status(500).json({
+            error: ''+err})
+    })
 });
 
 
