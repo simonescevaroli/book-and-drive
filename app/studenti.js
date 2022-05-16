@@ -17,6 +17,7 @@ router.get('/me',(req,res)=>{
     .then(profile =>{
 
         res.status(200).json({
+            self: '/api/v1/studenti/' + profile.id,
             foglio_rosa: profile.username,
             nome: profile.nome,
             cognome: profile.cognome,
