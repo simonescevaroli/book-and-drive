@@ -1,5 +1,4 @@
 const express = require('express');
-var cors = require('cors')
 const app = express();
 const istruttori = require('./istruttori.js')
 const prenotazioni = require('./prenotazioni.js')
@@ -14,7 +13,6 @@ const Prenotazione = require('./models/prenotazione.js');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(cors())
 
 app.use('/', express.static('static'));
 
