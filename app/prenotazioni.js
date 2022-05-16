@@ -10,8 +10,9 @@ const Segreteria = require('./models/segreteria.js');
 
 router.post('/prenotaGuida', (req,res)=>{
     //Prenota una guida
-    var slot = new Date(req.body.slot);
-    slot.setTime( slot.getTime() - new Date().getTimezoneOffset()*60*1000);
+    var slot = new Date(req.body.slot);//YYYY-MM-DDTHH:mm
+    slot.setHours(slot.getHours() + 2);
+    console.log("prenotazione guida in data:",slot);//qui stampa 2 ore in meno
     var prenotazione = new Prenotazione({
         slot: slot,
         id_studente: req.query.id_studente,
@@ -20,8 +21,11 @@ router.post('/prenotaGuida', (req,res)=>{
     console.log(prenotazione);
     
     prenotazione.save()
-    .then(()=>{
-        res.status(201).json({message: "guida prenotata con successo"});
+    .then((prenotazione)=>{
+        res.status(201).json({
+            self: '/api/v1/prentoazioni/:'+prenotazione._id,
+            message: "guida prenotata con successo"
+        });
     })
     .catch((err)=>{ 
         console.log("errore:"+err);
