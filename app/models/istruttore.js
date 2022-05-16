@@ -3,9 +3,7 @@ var Schema = mongoose.Schema;
 
 //Create a model named Istruttore
 module.exports = mongoose.model('Istruttore', new Schema({ 
-        username: String,
+        _id: String, //nome.cognome
         password: String,
-        nome: {type:String, trim:true, default:'Elon'},
-        cognome: {type:String, trim:true, default:'Musk'},
-        telefono:{type:String, trim:true, default:'123456789'}
+        telefono: String
     }));
