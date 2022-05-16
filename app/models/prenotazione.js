@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 module.exports = mongoose.model('Prenotazione', new Schema({ 
         slot: {type:Date},
         username_studente:{type:String},
-        nomminativo_studente: {type:String},
+        nominativo_studente: {type:String},
         username_istruttore: {type:String},
         presenza: {type:Boolean}
     }));
