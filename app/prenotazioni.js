@@ -29,8 +29,7 @@ router.get('/mieGuide', async(req,res)=>{
     try {
         student = await Studente.findById(user_stud);
     } catch (error) {
-        // This catch CastError when studentId cannot be casted to mongoose ObjectId
-        // CastError: Cast to ObjectId failed for value "11" at path "_id" for model "Student"
+        res.status(400).json({error: "Qualcosa non è andato a buon fine"})
     }
     if(student == null) {
         res.status(400).json({ error: 'Questo studente non esiste' });
