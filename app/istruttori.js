@@ -11,10 +11,12 @@ router.get('/visualizzaImpegni',(req,res)=>{
     //Visualizza le guide prenotate con me (istruttore)
 });
 
-router.get('/verificaDiponibilita',(req,res)=>{
+router.get('/verificaDiponibilita',async (req,res)=>{
     //verifica disponibilità degli istruttori
-    var slot=new Date(req.body.slot);
-    
+    console.log("verifica disponibilità");
+    console.log("slot:",req.query.slot)
+    var slot=new Date(req.query.slot);
+    console.log(slot);
     //recupero gli id di tutti gli istruttori nel db
     var all_istructors= await Istruttore.find({},{_id:1}).exec();
     for(let i=0; i < all_istructors.length; i++){

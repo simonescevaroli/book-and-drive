@@ -14,12 +14,12 @@ router.post('/prenotaGuida',async (req,res)=>{
     var id_studente=req.query.username_studente;
     var slot = new Date(req.body.slot);
     
-    if((slot.getMonth()>9 && slot.getMonth()<=11 && slot.getDay>=30) || (slot.getMonth()>0 && slot.getMonth()<=2 && slot.getDay<=26)) {
+    /*if((slot.getMonth()>9 && slot.getMonth()<=11 && slot.getDay>=30) || (slot.getMonth()>0 && slot.getMonth()<=2 && slot.getDay<=26)) {
         slot.setHours(slot.getHours() + 1);
     }
     else{
         slot.setHours(slot.getHours() + 2);
-    }
+    }*/
     var studente= await Studente.find({_id:id_studente},{noem:1,cognome:1}).exec();
     var nominativo_studente=studente.nome+" "+studente.cognome;
     var prenotazione = new Prenotazione({
