@@ -21,8 +21,9 @@ router.post('/prenotaGuida',async (req,res)=>{
     console.log("nominativo studente:"+nominativo_studente);
     
     //cotrollo se la prenotazione è già stata effettuata
-    var check=await Prenotazione.findOne({slotslot,username_istruttore:req.body.username_istruttore, username_studente:id_studente}).exec();
+    var check=await Prenotazione.find({slot:slot,username_istruttore:req.body.username_istruttore, username_studente:id_studente}).exec();
     if(check.length>0){
+        console.log("prenotazione esiste già")
         res.status(208).json({
             message:"prenotazione esiste già",
             self:"/api/v1/Prenotazioni/"+check._id
@@ -36,7 +37,9 @@ router.post('/prenotaGuida',async (req,res)=>{
     });
      prenotazione.save()
     .then((prenotazione)=>{
+        console.log("prenotazione effettuata");
         res.status(201).json({
+            
             message: "guida prenotata con successo",
             self:'/api/v1/Prenotazioni/'+prenotazione._id
         });

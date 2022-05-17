@@ -1,4 +1,4 @@
-var my_id="foglio_rosa06730";
+var my_id="foglio_rosa03587";
 function available_istructors_request()
 {   
     var form = document.getElementById("data_ora").elements;
@@ -13,15 +13,21 @@ function available_istructors_request()
             "Access-Control-Allow-Origin": "*"
           }
     })
-    .then((res)=>{
-        if(res.status==204){
+
+    .then((resp)=>{
+        res=resp.json();
+        if(resp.status==204){
             alert(res.message+"\n riprova con un'altra data");
             return;
         }
-        else if(res.status==404){
+        else if(resp.status==404){
             alert(res.message+"\n riprova in un secondo momento");
             return;
         }
+        console.log(resp.status);
+        return res;
+    }).then((res)=>{
+        
         console.log(res.available_istructors[0]);
         var br = document.createElement("br");
         console.log("br",br);
@@ -52,7 +58,7 @@ function available_istructors_request()
         element.appendChild(form);
         
     })
-    .catch(err => alert("errore invio o ricezione dati(verifica disponibilita):"+err));
+    .catch(err=>alert(err));
     
 };
 
@@ -82,18 +88,21 @@ function invia_dati_per_prenotazione(slot,username_istruttore){
           },
           body:JSON.stringify({slot:slot,username_istruttore: username_istruttore})
     })
-    .then((res)=>{
-        console.log(res.status);
-        if(res.status==201){
+    .then((resp)=>{
+        res=resp.json()
+        
+        if(resp.status==208){
+            alert(res.message+"\n"+"URI:"+res.self);
+            
+        }
+        else if(resp.status==201){
             alert(res.message+'\nHai effettuato la prenotazione con slot orario:'+slot+" e istruttore: "+username_istruttore+'\n'+"ritorna al menù");
         }
-        else if(res.status==208){
-            alert(res.message+"\n URI: "+res.self);
-        }   
-        else{
+        else if(resp.status==404){
             alert(res.error+'\nriprova');
             location.reload();
-        } 
+        }
+        
     })
     .catch(err => alert("errore invio o ricezione dati(invia dati prenotazione):"+err));
 }
