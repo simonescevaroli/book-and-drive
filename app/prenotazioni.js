@@ -20,7 +20,7 @@ router.post('/prenotaGuida',async (req,res)=>{
     else{
         slot.setHours(slot.getHours() + 2);
     }*/
-    var studente= await Studente.find({_id:id_studente},{noem:1,cognome:1}).exec();
+    var studente= await Studente.find({_id:id_studente},{nome:1,cognome:1}).exec();
     var nominativo_studente=studente.nome+" "+studente.cognome;
     var prenotazione = new Prenotazione({
         slot: slot,

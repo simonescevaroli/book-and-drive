@@ -36,7 +36,7 @@ function available_istructors_request()
             label.appendChild(document.createElement('br'));
             form.appendChild(label);
         }
-
+        form.appendChild(document.createElement("br"));
         var submit_btn = document.createElement("button")
         submit_btn.setAttribute("type", "button");
         submit_btn.textContent="Prenota";
@@ -50,6 +50,34 @@ function available_istructors_request()
 };
 
 function effettua_prenotazione(){
+    var form = document.getElementById("data_ora").elements;
+    var data = form["data"].value;
+    var ora = form["ora"].value;
+    var stringa_data_ora= data+"T"+ora+":00.000Z";
+    var istructors = document.getElementsByName('istructor');
+              
+    for(i = 0; i < istructors.length; i++) {
+        if(istructors[i].checked){
+            console.log("istruttore selezionato:",istructors[i].value);
+            invia_dati_per_prenotazione(stringa_data_ora,istructors[i].value);
+        }
+    }
+    //invia messaggio dicendo che non ha selezionato nessun istruttore
 
-    
+}
+
+function invia_dati_per_prenotazione(slot,username_istruttore){
+
+    fetch("http://localhost:8080/api/v1/prenotazioni/prenotaGuida/?username_studente="+my_id,{
+        method:"POST",
+        headers: {
+            'Content-Type': 'application/json',
+            "Access-Control-Allow-Origin": "*"
+          },
+          body:JSON.stringify({slot:slot,username_istruttore: username_istruttore})
+    })
+    .then(response => response.json())
+    .then((res)=>{
+        alert(res.message+'\n'+"torna al menù");
+    })
 }
