@@ -7,9 +7,19 @@ const Prenotazione = require('./models/prenotazione.js');
 const Istruttore = require('./models/istruttore.js');
 const Segreteria = require('./models/segreteria.js');
 
-router.get('/guideStudenti', (req,res)=>{
+router.get('/guideStudenti', async (req,res)=>{
     //Visualizza le guide prenotate di tutti gli studenti
-    
+    let prenotazioni = await Prenotazione.find({}).exec();
+    prenotazioni = prenotazioni.map((prenot)=>{
+        return {
+            self: "api/v1/prenotazioni/" + prenot.id,
+            studente: prenot.nominativo_studente,
+            slot: prenot.slot.toLocaleString('it-IT'),
+            istruttore: prenot.username_istruttore,
+            presenza: prenot.presenza
+        }
+    })
+    res.status(200).json(prenotazioni);
 });
 
 
