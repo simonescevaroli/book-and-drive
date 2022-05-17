@@ -1,4 +1,6 @@
 const express = require('express');
+const cors = require('cors')
+
 const app = express();
 const istruttori = require('./istruttori.js')
 const prenotazioni = require('./prenotazioni.js')
@@ -13,7 +15,7 @@ const Prenotazione = require('./models/prenotazione.js');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
+app.use(cors())
 app.use('/', express.static('static'));
 
 app.use('/api/v1/istruttori', istruttori);
@@ -31,10 +33,16 @@ inserimentoDatiTest();
 module.exports = app;
 
 
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
+  
+  
+
 async function inserimentoDatiTest (){
 
     let studente = new Studente({
-        _id : "foglio_rosa0",
+        _id : "foglio_rosa0"+getRandomInt(9000),
         password : "pass",
         nome: "andrea",
         cognome: "lorenzetti",
@@ -45,7 +53,7 @@ async function inserimentoDatiTest (){
     studente = await studente.save();
    // console.log("studente inserito", studente);
    studente = new Studente({
-        _id : "foglio_rosa1",
+        _id : "foglio_rosa1"+getRandomInt(9000),
         password : "pass",
         nome: "alberto",
         cognome: "gusmeroli",
@@ -56,7 +64,7 @@ async function inserimentoDatiTest (){
     studente = await studente.save();
 
     studente = new Studente({
-        _id : "foglio_rosa2",
+        _id : "foglio_rosa2"+getRandomInt(9000),
         password : "pass1",
         nome: "simone",
         cognome: "scevaroli",
@@ -66,7 +74,7 @@ async function inserimentoDatiTest (){
     });
 
     let istruttore1 = new Istruttore({
-        _id : "elon.musk",
+        _id : "elon.musk"+getRandomInt(9000),
         password : "pass1",
         telefono: "3458910227"   
     });
@@ -75,7 +83,7 @@ async function inserimentoDatiTest (){
     
     
     let istruttore2 = new Istruttore({
-        _id : "luca.zeni",
+        _id : "luca.zeni"+getRandomInt(9000),
         password : "passs2",
         telefono: "3458110227"   
     });
