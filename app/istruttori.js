@@ -25,7 +25,7 @@ router.get('/verificaDiponibilita',async (req,res)=>{
     console.log(all_istructors);
 
     //recupero gli id di tutti gli istruttori già prenotati per quella data e ora
-    const booked_istructors= await Prenotazione.find({slot: slot},{_id:1 }).exec();
+    const booked_istructors= await Prenotazione.find({slot: slot},{username_istruttore:1 }).exec();
     for(let i=0; i < booked_istructors.length; i++){
         booked_istructors[i]=booked_istructors[i].id_istruttore;
     }

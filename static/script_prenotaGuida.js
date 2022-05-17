@@ -1,4 +1,4 @@
-var my_id="a1";
+var my_id="foglio_rosa06730";
 function available_istructors_request()
 {   
     var form = document.getElementById("data_ora").elements;
@@ -13,8 +13,15 @@ function available_istructors_request()
             "Access-Control-Allow-Origin": "*"
           }
     })
-    .then(response => response.json())
     .then((res)=>{
+        if(res.status==204){
+            alert(res.message+"\n riprova con un'altra data");
+            return;
+        }
+        else if(res.status==404){
+            alert(res.message+"\n riprova in un secondo momento");
+            return;
+        }
         console.log(res.available_istructors[0]);
         var br = document.createElement("br");
         console.log("br",br);
@@ -45,7 +52,7 @@ function available_istructors_request()
         element.appendChild(form);
         
     })
-    .catch(err => console.log(err));
+    .catch(err => alert("errore invio o ricezione dati(verifica disponibilita):"+err));
     
 };
 
@@ -62,12 +69,11 @@ function effettua_prenotazione(){
             invia_dati_per_prenotazione(stringa_data_ora,istructors[i].value);
         }
     }
-    //invia messaggio dicendo che non ha selezionato nessun istruttore
 
 }
 
 function invia_dati_per_prenotazione(slot,username_istruttore){
-
+    console.log("username istruttore:",username_istruttore)
     fetch("http://localhost:8080/api/v1/prenotazioni/prenotaGuida/?username_studente="+my_id,{
         method:"POST",
         headers: {
@@ -76,8 +82,18 @@ function invia_dati_per_prenotazione(slot,username_istruttore){
           },
           body:JSON.stringify({slot:slot,username_istruttore: username_istruttore})
     })
-    .then(response => response.json())
     .then((res)=>{
-        alert(res.message+'\n'+"torna al menù");
+        console.log(res.status);
+        if(res.status==201){
+            alert(res.message+'\nHai effettuato la prenotazione con slot orario:'+slot+" e istruttore: "+username_istruttore+'\n'+"ritorna al menù");
+        }
+        else if(res.status==208){
+            alert(res.message+"\n URI: "+res.self);
+        }   
+        else{
+            alert(res.error+'\nriprova');
+            location.reload();
+        } 
     })
+    .catch(err => alert("errore invio o ricezione dati(invia dati prenotazione):"+err));
 }
