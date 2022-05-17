@@ -24,9 +24,21 @@ router.get('/guideStudenti', async (req,res)=>{
 
 
 
-router.get('/resocontoStudenti', (req,res)=>{
-// Visualizza dati personali di tutti gli studenti
-
+router.get('/resocontoStudenti', async (req,res)=>{
+    // Visualizza dati personali di tutti gli studenti
+    let studenti = await Studente.find({}).exec();
+    studenti = studenti.map((profile) => {
+        return{
+            self: "api/v1/studenti/" + profile.id,
+            foglio_rosa: profile._id,
+            nome: profile.nome,
+            cognome: profile.cognome,
+            dataNascita: profile.dataNascita.toLocaleString('it-IT'),
+            telefono: profile.telefono,
+            email: profile.email
+        }
+    })
+    res.status(200).json(studenti);
 });
 
 
