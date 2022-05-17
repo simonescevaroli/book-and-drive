@@ -8,8 +8,28 @@ const Istruttore = require('./models/istruttore.js');
 const Segreteria = require('./models/segreteria.js');
 
 
-router.get('/me',(req,res)=>{
-// visualizza dati personali studente
+router.get('/me', async (req,res)=>{
+    // visualizza dati personali studente
+
+    try{
+        let studente = await Studente.findOne({_id: req.query.id});
+        res.status(200).json({
+            self: '/api/v1/studenti/' + studente.id,
+            foglio_rosa: studente._id,
+            nome: studente.nome,
+            cognome: studente.cognome,
+            dataNascita: studente.dataNascita.toISOString(),
+            telefono: studente.telefono,
+            email: studente.email
+        });
+    }
+    catch(err){
+        res.status(400).json({
+            confirm: 'fail',
+            error: err.message,
+            description: 'Impossibile caricare dati personali'
+        })
+    }
 });
 
 
