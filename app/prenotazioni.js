@@ -32,14 +32,14 @@ router.get('/mieGuide', async(req,res)=>{
         res.status(400).json({error: "Qualcosa non è andato a buon fine"})
     }
     if(student == null) {
-        res.status(400).json({ error: 'Questo studente non esiste' });
+        res.status(404).json({ error: 'Questo studente non esiste' });
         return;
     };
     guide = await Prenotazione.find({username_studente: user_stud}).exec();
     guide = guide.map((guida)=>{
         return {
             self: "api/v1/prenotazioni/" + guida.id,
-            slot: guida.slot.toLocaleString('it-IT'),
+            slot: guida.slot.toISOString(),
             studente: guida.nominativo_studente,
             istruttore: guida.username_istruttore,
             presenza: guida.presenza
