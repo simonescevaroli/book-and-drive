@@ -8,6 +8,10 @@ const segreteria = require('./segreteria.js')
 const studenti = require('./studenti.js')
 
 
+const Studente = require('./models/studente.js');
+const Istruttore = require('./models/istruttore.js');
+const Prenotazione = require('./models/prenotazione.js');
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -28,4 +32,67 @@ app.use((req, res) => {
 
 module.exports = app;
 
+inserimentoDatiTest();
 module.exports = app;
+
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
+  
+  
+
+async function inserimentoDatiTest (){
+
+    let studente = new Studente({
+        _id : "foglio_rosa0"+getRandomInt(9000),
+        password : "pass",
+        nome: "andrea",
+        cognome: "lorenzetti",
+        dataNascita: new Date("04-03-2000"),
+        telefono: "3490901908",
+        email: "lorenzetti889@gmail.com"    
+    });
+    studente = await studente.save();
+   // console.log("studente inserito", studente);
+   studente = new Studente({
+        _id : "foglio_rosa1"+getRandomInt(9000),
+        password : "pass",
+        nome: "alberto",
+        cognome: "gusmeroli",
+        dataNascita: new Date("04-03-2000"),
+        telefono: "3490901508",
+        email: "lorenzetti189@gmail.com"    
+    });
+    studente = await studente.save();
+
+    studente = new Studente({
+        _id : "foglio_rosa2"+getRandomInt(9000),
+        password : "pass1",
+        nome: "simone",
+        cognome: "scevaroli",
+        dataNascita: new Date("02-01-2000"),
+        telefono: "3490901108",
+        email: "lorenzetti139@gmail.com"    
+    });
+
+    let istruttore1 = new Istruttore({
+        _id : "elon.musk"+getRandomInt(9000),
+        password : "pass1",
+        telefono: "3458910227"   
+    });
+    istruttore1 = await istruttore1.save();
+    console.log("istruttore inserito", istruttore1._id);
+    
+    
+    let istruttore2 = new Istruttore({
+        _id : "luca.zeni"+getRandomInt(9000),
+        password : "passs2",
+        telefono: "3458110227"   
+    });
+    istruttore2 = await istruttore2.save();
+
+
+    //console.log("istruttore inserito", istruttore2);
+
+}

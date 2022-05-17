@@ -71,7 +71,11 @@ router.get('/verificaDiponibilita',async (req,res)=>{
     //recupero dati degli istruttori disponibili e li invio in risposta al client oppure invio l errore riscontrato
     Istruttore.find({_id: {$in: available_istructors_id}},{_id:1}).exec().then((data)=>{    
         if(!data.length){
-            res.status(204).json({message:"non ci sono istruttori disponibili per quello slot"});
+            console.log("no istruttori");
+            res.status(203).json({
+                message:"non ci sono istruttori disponibili per quello slot"
+            });
+            
         }
         else{
             res.status(200).json({

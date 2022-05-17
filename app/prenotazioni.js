@@ -28,6 +28,7 @@ router.post('/prenotaGuida',async (req,res)=>{
             message:"prenotazione esiste già",
             self:"/api/v1/Prenotazioni/"+check._id
         })
+        return;
     }
     var prenotazione = new Prenotazione({
         slot: slot,
@@ -54,11 +55,14 @@ router.post('/prenotaGuida',async (req,res)=>{
 router.delete('/annullaGuida', (req,res)=>{
     //annulla una prenotazione
     console.log("annulla guida");
+    console.log(req.query._id);
     Prenotazione.deleteOne({_id: req.query._id})
     .then(()=>{
-        console.log(res.status(200).json({message: "guida cancellata con successo"}));
+        res.status(200).json({message: "guida cancellata con successo"});
     })
     .catch((err)=>{
+        
+        console.log("errore")
         res.status(500).json({
             error: ''+err})
     })
@@ -77,10 +81,10 @@ router.get('/mieGuide', async(req,res)=>{
     try {
         student = await Studente.findById(user_stud);
     } catch (error) {
-        res.status(400).json({error: "Qualcosa non è andato a buon fine"})
+        res.status(500).json({error: "Qualcosa non è andato a buon fine"})
     }
     if(student == null) {
-        res.status(400).json({ error: 'Questo studente non esiste' });
+        res.status(404).json({ error: 'Questo studente non esiste' });
         return;
     };
     guide = await Prenotazione.find({username_studente: user_stud}).exec();
@@ -88,7 +92,7 @@ router.get('/mieGuide', async(req,res)=>{
         return {
             self: "api/v1/prenotazioni/" + guida.id,
             id_guida: guida.id,
-            slot: guida.slot.toLocaleString('it-IT'),
+            slot: guida.slot.toISOString(),
             studente: guida.nominativo_studente,
             istruttore: guida.username_istruttore,
             presenza: guida.presenza
