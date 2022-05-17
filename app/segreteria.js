@@ -33,7 +33,7 @@ router.get('/resocontoStudenti', async (req,res)=>{
             foglio_rosa: profile._id,
             nome: profile.nome,
             cognome: profile.cognome,
-            dataNascita: profile.dataNascita.toLocaleString('it-IT'),
+            dataNascita: profile.dataNascita.toISOString(),
             telefono: profile.telefono,
             email: profile.email
         }

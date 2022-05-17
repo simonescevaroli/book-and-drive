@@ -10,7 +10,7 @@ const Segreteria = require('./models/segreteria.js');
 
 router.get('/me', async (req,res)=>{
     // visualizza dati personali studente
-    
+
     try{
         let studente = await Studente.findOne({_id: req.query.id});
         res.status(200).json({
@@ -18,7 +18,7 @@ router.get('/me', async (req,res)=>{
             foglio_rosa: studente._id,
             nome: studente.nome,
             cognome: studente.cognome,
-            dataNascita: studente.dataNascita.toLocaleString('it-IT'),
+            dataNascita: studente.dataNascita.toISOString(),
             telefono: studente.telefono,
             email: studente.email
         });
