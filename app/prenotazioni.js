@@ -39,6 +39,7 @@ router.get('/mieGuide', async(req,res)=>{
     guide = guide.map((guida)=>{
         return {
             self: "api/v1/prenotazioni/" + guida.id,
+            id_guida: guida.id,
             slot: guida.slot.toLocaleString('it-IT'),
             studente: guida.nominativo_studente,
             istruttore: guida.username_istruttore,
