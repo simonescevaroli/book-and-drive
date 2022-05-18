@@ -12,7 +12,13 @@ const Segreteria = require('./models/segreteria.js');
 router.post('/prenotaGuida',async (req,res)=>{
     //Prenota una guida
     var id_studente=req.query.username_studente;
+
+    
     var slot = new Date(req.body.slot);
+    if(!slot.getDate() || !slot.getTime()){
+        res.status(400).json({error: "data o ora non fornite"});
+        return;
+    }
     console.log(id_studente);
 
     var studente= await Studente.findOne({_id:id_studente},{nome:1,cognome:1}).exec();
@@ -26,8 +32,9 @@ router.post('/prenotaGuida',async (req,res)=>{
         console.log("prenotazione esiste già")
         res.status(208).json({
             message:"prenotazione esiste già",
-            self:"/api/v1/Prenotazioni/"+check._id
+            self:"/api/v1/Prenotazioni/"+check[0]._id.toString()
         })
+        return;
     }
     var prenotazione = new Prenotazione({
         slot: slot,
@@ -54,11 +61,14 @@ router.post('/prenotaGuida',async (req,res)=>{
 router.delete('/annullaGuida', (req,res)=>{
     //annulla una prenotazione
     console.log("annulla guida");
+    console.log(req.query._id);
     Prenotazione.deleteOne({_id: req.query._id})
     .then(()=>{
-        console.log(res.status(200).json({message: "guida cancellata con successo"}));
+        res.status(200).json({message: "guida cancellata con successo"});
     })
     .catch((err)=>{
+        
+        console.log("errore")
         res.status(500).json({
             error: ''+err})
     })
@@ -77,7 +87,7 @@ router.get('/mieGuide', async(req,res)=>{
     try {
         student = await Studente.findById(user_stud);
     } catch (error) {
-        res.status(400).json({error: "Qualcosa non è andato a buon fine"})
+        res.status(500).json({error: "Qualcosa non è andato a buon fine"})
     }
     if(student == null) {
         res.status(404).json({ error: 'Questo studente non esiste' });

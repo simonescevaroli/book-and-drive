@@ -7,7 +7,6 @@ const prenotazioni = require('./prenotazioni.js')
 const segreteria = require('./segreteria.js')
 const studenti = require('./studenti.js')
 
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -28,4 +27,4 @@ app.use((req, res) => {
 
 module.exports = app;
 
-module.exports = app;
+

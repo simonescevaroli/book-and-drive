@@ -1,4 +1,4 @@
-var my_id="foglio_rosa03587";
+var my_id="foglio_rosa07589";
 function available_istructors_request()
 {   
     var form = document.getElementById("data_ora").elements;
@@ -15,47 +15,42 @@ function available_istructors_request()
     })
 
     .then((resp)=>{
-        res=resp.json();
-        if(resp.status==204){
-            alert(res.message+"\n riprova con un'altra data");
-            return;
-        }
-        else if(resp.status==404){
-            alert(res.message+"\n riprova in un secondo momento");
-            return;
-        }
-        console.log(resp.status);
-        return res;
-    }).then((res)=>{
-        
-        console.log(res.available_istructors[0]);
-        var br = document.createElement("br");
-        console.log("br",br);
-        var tag=document.createElement("p")
-        var text = document.createTextNode("Scegli un istruttore tra quelli disponibili:");
-        tag.appendChild(text);
-        var form = document.createElement("form");
-        form.setAttribute("id","selectIstructor");
-        var element = document.getElementById("selezione_istruttore");
-        element.appendChild(tag);
-        for(let i=0; i<res.available_istructors.length;i++){
-            var RB = document.createElement("input");
-            var label= document.createElement("label")
-            RB.setAttribute("type", "radio");
-            RB.setAttribute("name","istructor")
-            RB.setAttribute("value", res.available_istructors[i]._id);
-            label.appendChild(RB);
-            label.appendChild(document.createTextNode(res.available_istructors[i]._id))
-            label.appendChild(document.createElement('br'));
-            form.appendChild(label);
-        }
-        form.appendChild(document.createElement("br"));
-        var submit_btn = document.createElement("button")
-        submit_btn.setAttribute("type", "button");
-        submit_btn.textContent="Prenota";
-        submit_btn.setAttribute("onclick","effettua_prenotazione()")
-        form.appendChild(submit_btn);
-        element.appendChild(form);
+
+        resp.json().then((res)=>{
+            if(resp.status==203){
+                alert(res.message+"\n riprova con un'altra data");
+            }
+            else if(resp.status==404 || resp.status==400){
+                alert(res.error+"\n riprova ");
+            }
+            else if(resp.status==200){
+                var tag=document.createElement("p")
+                var text = document.createTextNode("Scegli un istruttore tra quelli disponibili:");
+                tag.appendChild(text);
+                var form = document.createElement("form");
+                form.setAttribute("id","selectIstructor");
+                var element = document.getElementById("selezione_istruttore");
+                element.appendChild(tag);
+                for(let i=0; i<res.available_istructors.length;i++){
+                    var RB = document.createElement("input");
+                    var label= document.createElement("label")
+                    RB.setAttribute("type", "radio");
+                    RB.setAttribute("name","istructor")
+                    RB.setAttribute("value", res.available_istructors[i]._id);
+                    label.appendChild(RB);
+                    label.appendChild(document.createTextNode(res.available_istructors[i]._id))
+                    label.appendChild(document.createElement('br'));
+                    form.appendChild(label);
+                }
+                form.appendChild(document.createElement("br"));
+                var submit_btn = document.createElement("button")
+                submit_btn.setAttribute("type", "button");
+                submit_btn.textContent="Prenota";
+                submit_btn.setAttribute("onclick","effettua_prenotazione()")
+                form.appendChild(submit_btn);
+                element.appendChild(form);
+            }    
+        }).catch((error)=>alert(error))
         
     })
     .catch(err=>alert(err));
@@ -89,19 +84,20 @@ function invia_dati_per_prenotazione(slot,username_istruttore){
           body:JSON.stringify({slot:slot,username_istruttore: username_istruttore})
     })
     .then((resp)=>{
-        res=resp.json()
+        resp.json().then((res)=>{
+            if(resp.status==208){
+                alert(res.message+"\n"+"URI:"+res.self);
+                location.reload();
+            }
+            else if(resp.status==201){
+                alert(res.message+'\nHai effettuato la prenotazione con slot orario:'+slot+" e istruttore: "+username_istruttore+'\n'+"ritorna al menù");
+                location.reload();
+            }
+            else if(resp.status==404){
+                alert(res.error+'\nriprova');
+                location.reload();
+            }})
         
-        if(resp.status==208){
-            alert(res.message+"\n"+"URI:"+res.self);
-            
-        }
-        else if(resp.status==201){
-            alert(res.message+'\nHai effettuato la prenotazione con slot orario:'+slot+" e istruttore: "+username_istruttore+'\n'+"ritorna al menù");
-        }
-        else if(resp.status==404){
-            alert(res.error+'\nriprova');
-            location.reload();
-        }
         
     })
     .catch(err => alert("errore invio o ricezione dati(invia dati prenotazione):"+err));
