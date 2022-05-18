@@ -18,6 +18,7 @@ function mostraDatiPersonali(){
             return
         }
 
+        // get html IDs
         var foglioRosa = document.getElementById("foglio_rosa");
         var nome = document.getElementById("nome");
         var cognome = document.getElementById("cognome");
@@ -25,17 +26,13 @@ function mostraDatiPersonali(){
         var telefono = document.getElementById("telefono");
         var email = document.getElementById("email");
 
-
-        var date = res.dataNascita.toLocaleString('it-IT')        
-        giorno = date.substring(0,10);
-        ora = date.substring(11,16);
-
-        foglioRosa.textContent += res.foglio_rosa;
-        nome.textContent += res.nome;
-        cognome.textContent += res.cognome;
-        dataNascita.textContent += giorno + "  " + ora;
-        telefono.textContent += res.telefono;
-        email.textContent += res.email;
+        // set text fields with retrieved student data
+        foglioRosa.textContent = res.foglio_rosa;
+        nome.textContent = res.nome;
+        cognome.textContent = res.cognome;
+        dataNascita.textContent = res.dataNascita.substring(0,10);
+        telefono.textContent = res.telefono;
+        email.textContent = res.email;
 
     }))
     .catch(err => alert("errore in visualizzazione dati personali studente:"+err));
