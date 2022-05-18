@@ -1,0 +1,342 @@
+openapi: 3.0.0
+info:
+  version: '1.0'
+  title: "Book and Drive"
+  description: API for managing prenotations of drivings for a driving school.
+  license:
+    name: MIT
+
+servers:
+  - url: http://localhost:8000/api/v1
+    description: Localhost
+    
+paths:
+  /prenotazioni/mieGuide:
+    get:
+      description: >-
+        Gets the list of student's prenotations.
+      summary: View student's prenotations
+      parameters:
+        - in: query
+          name: username_stud
+          schema:
+            type: string
+          description: The username (foglio rosa) of a student
+      responses:
+        '400':
+          description: 'The student is not specified or something went wrong during the query'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'Studente non trovato'
+        '200':
+          description: 'Student found, return all his prenotations'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Prenotazione'
+
+  /segreteria/guideStudenti:
+    get:
+      description: >-
+        Gets the list of all students' prenotations.
+      summary: View all students' prenotations
+      responses:
+        '200':
+          description: "Return all the students' prenotations"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Prenotazione'
+  
+  /studenti/me:
+    get:
+      description: >-
+        Shows the student personal data.
+      summary: "Student personal data visualization."
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+          description: The username (foglio rosa) of a student
+      responses:
+        '200':
+          description: 'User found, data correctly retrieved.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Studente'
+        '400':
+          description: 'Server error'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'Cannot load user data'
+  
+  /segreteria/resocontoStudenti:
+    get:
+      description: >-
+        Shows the personal data of all students.
+      summary: "Student personal data visualization."
+      responses:
+        '200':
+          description: 'The data of all the students have been retrieved.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Studente'
+                  
+  /istruttori/verificaDisponibilita:
+    get:
+      description: >-
+        Get the available istructors for a time slot of a certain date.
+      summary: Retrieve available istructors
+      parameters:
+        - in: query
+          name: slot
+          schema:
+            type: string
+          required: true
+          description: 'The slot format must be ISO 8601: YYYY-MM-DDThh:mm:ss.sssZ'
+      responses:
+        '200':
+          description: 'There are available istructors and their usernames are in the body' 
+          content:
+            application/json:
+              schema:
+                type: array
+                example:
+                    - _id: "mario.rossi"
+                    - _id: "giuseppe.verdi"
+                    - _id: "mario.rossi-1"
+        '203':
+          description: 'No available istructors for that time slot' 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: 'No istructors available' 
+        '404':
+          description: 'Server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'describes the error that took place in the server' 
+                
+                
+  /prenotazioni/prenotaGuida:
+    post:
+      description: >-
+        Book a drive with an istructor for a certain time slot.
+      summary: 'Make new reservation'
+      parameters:
+        - in: query
+          name: username_studente
+          schema:
+            type: string
+          required: true
+          description: 'The username of the student that is bookint the slot for a drive'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              required:
+                - username_istruttore
+                - slot
+              properties:
+                username_istruttore:
+                  type: string
+                  description: 'The username of the istructor'
+                slot:
+                  type: string
+                  description: 'The time slot of the reservation'
+            
+      responses:
+        '208':
+          description: 'The prenotation the student intend to make already exists'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  URI:
+                    type: string 
+                    description: 'link to the prenotation that already exsists: /api/v1/Prenotazioni/id'
+                  message:
+                    type: string
+                    description: 'message to display for the user in wich the server reports that the prenotation already exists'
+        '201':
+          description: 'success in booking the drive'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  URI:
+                    type: string 
+                    description: 'link to the new prenotation: /api/v1/Prenotazioni/id'
+                  message:
+                    type: string
+                    description: 'message to display for the user: booking successfully'
+        '404':
+          description: 'Server error'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'describes the error that took place in the server' 
+
+
+  /prenotazioni/annullaGuida:
+    delete:
+      description: >-
+        Cancel a prenotation by its ID.
+      summary: 'Remove a reservation'
+      parameters:
+        - in: query
+          name: _id
+          schema:
+            type: string
+          required: true
+          description: 'contains the id that the user want to remove'
+      responses:
+        '200':
+          description: 'reservation removed successfully'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: 'successfull message for the user'
+        '404':
+          description: 'Server error'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'describes the error that took place in the server'
+      
+          
+components:
+  schemas:
+  
+    Studente:
+      type: object
+      required:
+        - _id
+        - password
+        - nome
+        - cognome
+        - dataNascita
+        - telefono
+        - email
+      properties:
+        _id:
+          type: string
+          description: 'Foglio rosa ID (username of student account)'
+        password:
+          type: string
+          description: 'Password of student account'
+        nome:
+          type: string
+          description: 'First name of student'
+        cognome:
+          type: string
+          description: 'Last name of student'
+        dataNascita:
+          type: object
+          description: 'Date of birth of student'
+        telefono:
+          type: string
+          description: 'Phone number of the student'
+        email:
+          type: string
+          description: 'Email address of the student'
+          
+    Segreteria:
+      type: object
+      required:
+      - username
+      - password
+      properties:
+        username:
+          type: string
+          description: 'Username of secretary account'
+        password:
+          type: string
+          description: 'Password of secretary account'
+          
+    Istruttore:
+      type: object
+      required:
+        - _id
+        - password
+        - telefono
+      properties:
+        _id:
+          type: string
+          description: 'name.surname'
+        password:
+          type: string
+          description: 'password of the istructor'
+        telefono:
+          type: string
+          description: 'phone number'
+          
+    Prenotazione:
+      type: object
+      required:
+      - slot
+      - username_studente
+      - nominativo_studente
+      - username_istruttore
+      - presenza
+      properties:
+        slot:
+          type: object
+          description: 'Date and hour of the driving prenotation'
+        username_studente:
+          type:  string
+          description: 'username of the student that booked the drive'
+        nominativo_studente:
+          type: string
+          description: "name and surname of the student that booked the drive"
+        username_istruttore:
+          type: string
+          description: "username of the istructor of the drive"
+        presenza:
+          type: boolean
+          description: "track the presence of the student at the drive booked"
