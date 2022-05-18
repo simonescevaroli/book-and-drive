@@ -1,4 +1,4 @@
-var my_id="foglio_rosa1679";
+var my_id="foglio_rosa07589";
 function available_istructors_request()
 {   
     var form = document.getElementById("data_ora").elements;
@@ -20,8 +20,8 @@ function available_istructors_request()
             if(resp.status==203){
                 alert(res.message+"\n riprova con un'altra data");
             }
-            else if(resp.status==404){
-                alert(res.error+"\n riprova in un secondo momento");
+            else if(resp.status==404 || resp.status==400){
+                alert(res.error+"\n riprova ");
             }
             else if(resp.status==200){
                 var tag=document.createElement("p")
@@ -87,10 +87,11 @@ function invia_dati_per_prenotazione(slot,username_istruttore){
         resp.json().then((res)=>{
             if(resp.status==208){
                 alert(res.message+"\n"+"URI:"+res.self);
-                
+                location.reload();
             }
             else if(resp.status==201){
                 alert(res.message+'\nHai effettuato la prenotazione con slot orario:'+slot+" e istruttore: "+username_istruttore+'\n'+"ritorna al menù");
+                location.reload();
             }
             else if(resp.status==404){
                 alert(res.error+'\nriprova');

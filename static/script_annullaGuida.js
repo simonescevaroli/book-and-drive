@@ -1,4 +1,4 @@
-var my_id="foglio_rosa1679"
+var my_id="foglio_rosa07589"
 
 visualizza_mie_guide();
 
@@ -12,31 +12,35 @@ function visualizza_mie_guide(){
         }
     })
     .then((resp)=>{
-        console.log(resp.status);
-        var res=resp.json();
-        if(resp.status==404 || resp.status==500){
-            alert(res.message);
-            return;
+        
+        if(resp.status==404 || resp.status==500 || resp.status==400){
+            
+            resp.json().then((res)=>{
+                alert(res.error);
+            });
         }
-        return res;
-    })
-    .then((res)=>{
-        console.log(res);
-        console.log(res.length);
-        for(let i=0; i < res.length; i++){
-            var tag=document.createElement("p");
-            var textID=document.createTextNode("Guida con id: "+res[i].id_guida);
-            tag.appendChild(textID);
-            tag.appendChild(document.createElement("br"));
-            var textSlot=document.createTextNode("data: "+res[i].slot);
-            tag.appendChild(textSlot);
-            tag.appendChild(document.createElement("br"));
-            var textIstruct=document.createTextNode("istruttore: "+res[i].istruttore);
-            tag.appendChild(textIstruct);
-            tag.appendChild(document.createElement("br"));
-            mie_prenotazioni.appendChild(tag);
+
+        else if(resp.status==200){
+            resp.json().then((res)=>{
+                console.log(res.length);
+                for(let i=0; i < res.length; i++){
+                    var tag=document.createElement("p");
+                    var textID=document.createTextNode("Guida con id: "+res[i].id_guida);
+                    tag.appendChild(textID);
+                    tag.appendChild(document.createElement("br"));
+                    var textSlot=document.createTextNode("data: "+res[i].slot);
+                    tag.appendChild(textSlot);
+                    tag.appendChild(document.createElement("br"));
+                    var textIstruct=document.createTextNode("istruttore: "+res[i].istruttore);
+                    tag.appendChild(textIstruct);
+                    tag.appendChild(document.createElement("br"));
+                    mie_prenotazioni.appendChild(tag);
+                }
+            });
         }
-    });
+    
+    }).catch(err=>console.log(err))
+    
 }
 
 
