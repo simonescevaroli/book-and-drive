@@ -12,7 +12,13 @@ const Segreteria = require('./models/segreteria.js');
 router.post('/prenotaGuida',async (req,res)=>{
     //Prenota una guida
     var id_studente=req.query.username_studente;
+
+    
     var slot = new Date(req.body.slot);
+    if(!slot.getDate() || !slot.getTime()){
+        res.status(400).json({error: "data o ora non fornite"});
+        return;
+    }
     console.log(id_studente);
 
     var studente= await Studente.findOne({_id:id_studente},{nome:1,cognome:1}).exec();
@@ -26,7 +32,7 @@ router.post('/prenotaGuida',async (req,res)=>{
         console.log("prenotazione esiste già")
         res.status(208).json({
             message:"prenotazione esiste già",
-            self:"/api/v1/Prenotazioni/"+check._id
+            self:"/api/v1/Prenotazioni/"+check[0]._id.toString()
         })
         return;
     }
