@@ -1,4 +1,5 @@
 const express = require('express');
+const moment = require('moment');
 const mongoose = require('mongoose');
 const router = express.Router();
 
@@ -11,8 +12,12 @@ const Segreteria = require('./models/segreteria.js');
 
 router.post('/prenotaGuida',async (req,res)=>{
     //Prenota una guida
+    
     var id_studente=req.query.username_studente;
-
+    if( req.body.slot[10]!=="T" || req.body.slot[23]!=="Z"){
+        res.status(400).json({error: "slot temporale non fornito in formato ISO 8601"});
+        return;
+    }
     
     var slot = new Date(req.body.slot);
     if(!slot.getDate() || !slot.getTime()){
@@ -21,8 +26,23 @@ router.post('/prenotaGuida',async (req,res)=>{
     }
     console.log(id_studente);
 
+    //controllo se studente esiste
+    //constrollo se istruttore esiste
     var studente= await Studente.findOne({_id:id_studente},{nome:1,cognome:1}).exec();
     console.log(studente);
+    if(!studente){
+        res.status(400).json({error: "username studente non esiste"});
+        return;
+    }
+
+    var username_istruttore= req.body.username_istruttore;
+    var istruttore= await Istruttore.findOne({_id:username_istruttore}).exec();
+    console.log(istruttore);
+    if(!istruttore){
+        res.status(400).json({error: "username istruttore non esiste"});
+        return;
+    }
+
     var nominativo_studente=studente.nome+" "+studente.cognome;
     console.log("nominativo studente:"+nominativo_studente);
     
@@ -106,6 +126,8 @@ router.get('/mieGuide', async(req,res)=>{
     })
     res.status(200).json(guide);
 });
+
+
 
 
 module.exports = router;

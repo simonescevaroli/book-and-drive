@@ -45,6 +45,11 @@ router.get('/verificaDiponibilita',async (req,res)=>{
     //verifica disponibilità degli istruttori
     console.log("verifica disponibilità");
     console.log("slot:",req.query.slot)
+    
+    if( req.query.slot[10]!=="T" || req.query.slot[23]!=="Z"){
+        res.status(400).json({error: "slot temporale non fornito in formato ISO_8601"});
+        return;
+    }
     var slot=new Date(req.query.slot);
     if(!slot.getDate() || !slot.getTime()){
         res.status(400).json({error: "data o ora non fornite"});
