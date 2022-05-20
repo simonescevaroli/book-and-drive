@@ -248,7 +248,37 @@ paths:
                   error:
                     type: string
                     description: 'describes the error that took place in the server'
-      
+
+  /istruttori/visualizzaImpegni:
+    get:
+      description: >-
+        Shows istructor prenotation.
+      summary: "Istructor prenotation visualization."
+      parameters: 
+        - in: query
+          name: id
+          schema:
+            type: string
+          required: true
+          description: "The username (username_istruttore) of an istructor"
+      responses:
+        '200':
+          description: 'Prenotation found, data correctly retrieved.'
+          content:
+            application/json:
+              schema:
+                type: array
+        '400':
+          description: 'Server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'Cannot load user prenotation'
+
           
 components:
   schemas:
