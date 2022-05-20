@@ -23,7 +23,7 @@ router.get('/visualizzaImpegni', async (req,res)=>{
             prenotazioni = prenotazioni.map((prenot)=>{
                 return {
                     self: "api/v1/prenotazioni/" + prenot.id,
-                    slot: prenot.slot.toLocaleString('it-IT'),
+                    slot: prenot.slot.toISOString(),
                     studente: prenot.nominativo_studente,
                     presenza: prenot.presenza
                 };
