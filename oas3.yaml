@@ -76,7 +76,27 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Studente'
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      description: 'Foglio rosa ID (username of student account)'
+                    nome:
+                      type: string
+                      description: 'First name of student'
+                    cognome:
+                      type: string
+                      description: 'Last name of student'
+                    dataNascita:
+                      type: string
+                      format: date-time
+                      description: 'Date of birth of student'
+                    telefono:
+                      type: string
+                      description: 'Phone number of the student'
+                    email:
+                      type: string
+                      description: 'Email address of the student'
         '400':
           description: 'Server error'
           content:
@@ -113,6 +133,7 @@ paths:
           name: slot
           schema:
             type: string
+            format: date-time
           required: true
           description: 'The slot format must be ISO 8601: YYYY-MM-DDThh:mm:ss.sssZ'
       responses:
@@ -122,10 +143,16 @@ paths:
             application/json:
               schema:
                 type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      description: 'username_istruttore '
                 example:
-                    - _id: "mario.rossi"
-                    - _id: "giuseppe.verdi"
-                    - _id: "mario.rossi-1"
+                  - _id: "mario.rossi"
+                  - _id: "giuseppe.verdi"
+                  - _id: "mario.rossi-1"
         '203':
           description: 'No available istructors for that time slot' 
           content:
@@ -174,6 +201,7 @@ paths:
                   description: 'The username of the istructor'
                 slot:
                   type: string
+                  format: date-time
                   description: 'The time slot of the reservation'
             
       responses:
