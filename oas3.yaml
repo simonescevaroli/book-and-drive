@@ -335,7 +335,8 @@ components:
           type: string
           description: 'Last name of student'
         dataNascita:
-          type: object
+          type: string
+          format: date-time
           description: 'Date of birth of student'
         telefono:
           type: string
@@ -384,7 +385,8 @@ components:
       - presenza
       properties:
         slot:
-          type: object
+          type: string
+          format: date-time
           description: 'Date and hour of the driving prenotation'
         username_studente:
           type:  string
