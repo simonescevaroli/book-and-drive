@@ -126,7 +126,12 @@ router.get('/mieGuide', async(req,res)=>{
     res.status(200).json(guide);
 });
 
+router.get('/guideDelGiorno',(req,res)=>{
+    console.log("trova le guide del giorno slot dove l istruttore è chi ha chiamato la funzione ")
+});
 
-
+router.get('/modificaPresenza',(req,res)=>{
+    console.log("modifica la presenza di uno studente ad una guida")
+});
 
 module.exports = router;
