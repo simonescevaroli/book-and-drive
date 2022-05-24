@@ -22,9 +22,9 @@ app.use(cors())
 app.use('/', express.static('static'));
 
 
-app.use('/api/v1/autenticazione_studente', autenticazione_studenti);
-app.use('/api/v1/autenticazione_istruttore', autenticazione_istruttori); 
-app.use('/api/v1/autenticazione_istruttore', autenticazione_segreteria); 
+app.use('/api/v1/autenticazione_studenti', autenticazione_studenti);
+app.use('/api/v1/autenticazione_istruttori', autenticazione_istruttori); 
+app.use('/api/v1/autenticazione_segreteria', autenticazione_segreteria); 
 
 /*
     route with tokenChecker for istruttori, studenti, prenotazioni
