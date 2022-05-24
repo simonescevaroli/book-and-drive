@@ -53,3 +53,32 @@ function login_istruttore(){
     .catch( error => console.error(error) ); // If there is any error you will catch them here
 
 };
+
+function login_segreteria(){
+
+    //get the form object
+    var username = document.getElementById("username").value;
+    var password = document.getElementById("password").value;
+   
+    fetch('http://localhost:8080/api/v1/autenticazione_segreteria', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify( { username_segreteria: username, password: password } ),
+    })
+    .then((resp) => resp.json()) // Transform the data into json
+    .then(function(data) { // Here you get the data to modify as you please
+       console.log(data);
+       if(res.success){
+           document.cookie = 'token='+data.token+"; "+" role="+data.role+"; path=/ ";
+           alert("autenticato con successo");
+           window.location="menu_segreteria.html";
+       }
+       else{
+           alert(res.message);
+           location.reload();
+       }
+   })
+    .catch( error => console.error(error) ); // If there is any error you will catch them here
+
+};
+ 
