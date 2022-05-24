@@ -14,7 +14,7 @@ const tokenChecker = function(req, res, next) {
 	}
 
 	// decode token, verifies secret and checks exp
-	jwt.verify(token, "a1", function(err, decoded) {			
+	jwt.verify(token, "a1", function(err, decoded) {	//cambiare "a1" con la stringa segreta per l encoding		
 		if (err) {
 			return res.status(403).send({
 				success: false,
