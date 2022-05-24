@@ -14,11 +14,13 @@ router.post('', async function(req, res) {
 	// user not found
 	if (!istruttore) {
 		res.status(401).json({success: false, message: 'Authentication failed. User not found.' });
+        return;
 	}
 	
 	// check if password matches
 	if (istruttore.password != req.body.password) {
 		res.status(401).json({ success: false, message: 'Authentication failed. Wrong password.' });
+        return;
 	}
 	
 	// if user is found and password is right create a token
