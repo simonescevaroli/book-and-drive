@@ -64,7 +64,7 @@ router.post('/nuovoStudente',async (req,res)=>{
         return;
     })
     .catch((err)=>{ 
-        res.status(406).json({error: "Ops, qualcosa è andato storto" });
+        res.status(406).json({error: "Ops, qualcosa è andato storto, probabilmente hai inserito la data di nascita nel formato sbagliato" });
         return;
     });
 });
