@@ -4,7 +4,7 @@ function login_studente(){
     var username = document.getElementById("username").value;
     var password = document.getElementById("password").value;
    
-    fetch('http://localhost:8080/api/v1/autenticazione_studente', {
+    fetch('http://localhost:8080/api/v1/autenticazione_studenti', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify( { username_studente: username, password: password } ),
@@ -32,7 +32,7 @@ function login_istruttore(){
     var username = document.getElementById("username").value;
     var password = document.getElementById("password").value;
    
-    fetch('http://localhost:8080/api/v1/autenticazione_istruttore', {
+    fetch('http://localhost:8080/api/v1/autenticazione_istruttori', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify( { username_istruttore: username, password: password } ),
@@ -40,13 +40,13 @@ function login_istruttore(){
     .then((resp) => resp.json()) // Transform the data into json
     .then(function(data) { // Here you get the data to modify as you please
        console.log(data);
-       if(res.success){
+       if(data.success){
            document.cookie = 'token='+data.token+"; "+" role="+data.role+"; path=/ ";
            alert("autenticato con successo");
            window.location="menu_istruttore.html";
        }
        else{
-           alert(res.message);
+           alert(data.message);
            location.reload();
        }
    })
@@ -68,13 +68,13 @@ function login_segreteria(){
     .then((resp) => resp.json()) // Transform the data into json
     .then(function(data) { // Here you get the data to modify as you please
        console.log(data);
-       if(res.success){
+       if(data.success){
            document.cookie = 'token='+data.token+"; "+" role="+data.role+"; path=/ ";
            alert("autenticato con successo");
            window.location="menu_segreteria.html";
        }
        else{
-           alert(res.message);
+           alert(data.message);
            location.reload();
        }
    })
