@@ -75,7 +75,7 @@ function annullaGuida(){
             if(resp.status==200){
                 alert(res.message);
             }
-            else if(resp.status==500){
+            else if(resp.status==500 || resp.status==401){
                 alert(res.error);
             }
         })

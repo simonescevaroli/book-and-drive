@@ -108,6 +108,10 @@ function invia_dati_per_prenotazione(slot,username_istruttore){
                 alert(res.message+'\nHai effettuato la prenotazione con slot orario:'+res.prenotazione.slot+" e istruttore: "+res.prenotazione.username_istruttore+'\n'+"ritorna al menù");
                 location.reload();
             }
+            else if(resp.status==400){
+                alert(res.error);
+                location.reload();
+            }
             else if(resp.status==404){
                 alert(res.error+'\nriprova');
                 location.reload();
