@@ -80,7 +80,7 @@ router.post('/prenotaGuida',async (req,res)=>{
 router.delete('/annullaGuida', async (req,res)=>{
     //annulla una prenotazione
     console.log("annulla guida");
-    var prenotazione = await Prenotazione.find({_id: req.query._id}).exec()
+    var prenotazione = await Prenotazione.findOne({_id: req.query._id}).exec()
     if(prenotazione.username_studente!=req.loggedUser.username_studente){
         res.status(401).json({
             error: "non puoi cancellare una guida non tua"

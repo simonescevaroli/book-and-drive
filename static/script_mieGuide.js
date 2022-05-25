@@ -1,5 +1,3 @@
-const { resourceUsage } = require("process");
-
 function getCookie(cname) {
     let name = cname + "=";
     let ca = document.cookie.split(';');

@@ -15,7 +15,7 @@ function getCookie(cname) {
 
 
 function mostraDatiPersonali(){
-    fetch("http://localhost:8080/api/v1/studenti/token="+getCookie("token"),{
+    fetch("http://localhost:8080/api/v1/studenti/me?token="+getCookie("token"),{
         method:"GET",
         headers: {
             'Content-Type': 'application/json',

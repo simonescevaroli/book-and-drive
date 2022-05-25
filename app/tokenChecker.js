@@ -4,26 +4,28 @@ const tokenChecker = function(req, res, next) {
 	
 	// check header or url parameters or post parameters for token
 	var token = req.body.token || req.query.token || req.headers['x-access-token'];
-
+	console.log("token == "+token);
 	// if there is no token
 	if (!token) {
-		return res.status(403).send({ 
+		res.status(403).send({ 
 			success: false,
 			error: 'No token provided.'
 		});
+		return
 	}
 
 	// decode token, verifies secret and checks exp
 	jwt.verify(token, "a1", function(err, decoded) {	//cambiare "a1" con la stringa segreta per l encoding		
 		if (err) {
-			return res.status(403).send({
+			res.status(403).send({
 				success: false,
 				error: 'Failed to authenticate token.'
-			});		
+			});	
+			return	
 		} else {
 			// if everything is good, save to request for use in other routes
 			req.loggedUser = decoded;
-
+			console.log(JSON.stringify(decoded)+" in tokenChecker")
 			next();
 		}
 	});
