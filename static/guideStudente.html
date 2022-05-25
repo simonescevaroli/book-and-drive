@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta lang="it-IT">
+        <title>Resoconto guide singolo studente</title>
+
+    </head>
+    <body>
+        <h1>Resoconto guide singolo studente</h1>
+        <p><big>Per favore, copia e incolla l'id dello studente di cui sei interessato nel box qui sotto</big></p>
+        <p style="position: absolute; top: 0; right: 0; width: 30; text-align:right;">
+            <img src="logo.png" alt="logo" />
+        </p>
+        <br/>
+        <div id="selez_studenti">
+            <p><big><big><b>&ensp;&ensp;id_studente&emsp;&emsp;Nominativo studente</b></big></big></p>
+            
+        </div>
+        <div class="col-md-6 col-md-offset-3" style="text-align:center; margin-bottom:48px">
+            <div style="background: #f9f9f9; border:1px solid #ddd; border-radius:3px; padding:12px;">
+                <form id="idform">
+                    <input type="text" name="_id" placeholder="ID studente" /><br/>
+                    <button type="button" onClick="visionaGuide()">Cerca</button> 
+                </form>
+            </div>
+        </div>
+        <br/>
+        <div id="guide">
+            <p><big><big><b>&ensp;&ensp;Studente&emsp;&emsp;Slot orario&emsp;Istruttore</b></big></big></p>
+            
+        </div>
+        <script src="script_guideStudente.js"></script> 
+    </body>
+</html>
