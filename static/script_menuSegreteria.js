@@ -8,7 +8,8 @@ function get_page_elencoStudenti(){
 }
 function get_page_guideStudente(){
     
-    alert("funzionalità non ancora implementata")   
+    window.location="guideStudente.html"
+
 }
 function get_page_datiStudente(){
     
