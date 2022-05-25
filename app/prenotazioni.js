@@ -11,8 +11,7 @@ const Segreteria = require('./models/segreteria.js');
 
 router.post('/prenotaGuida',async (req,res)=>{
     //Prenota una guida
-    
-    var id_studente=req.query.username_studente;
+    var id_studente=req.loggedUser.username_studente;
     if( req.body.slot[10]!=="T" || req.body.slot[23]!=="Z"){
         res.status(400).json({error: "slot temporale non fornito in formato ISO 8601"});
         return;
@@ -67,7 +66,8 @@ router.post('/prenotaGuida',async (req,res)=>{
         res.status(201).json({
             
             message: "guida prenotata con successo",
-            self:'/api/v1/Prenotazioni/'+prenotazione._id
+            self:'/api/v1/Prenotazioni/'+prenotazione._id,
+            prenotazione: prenotazione
         });
     })
     .catch((err)=>{ 
@@ -80,7 +80,13 @@ router.post('/prenotaGuida',async (req,res)=>{
 router.delete('/annullaGuida', (req,res)=>{
     //annulla una prenotazione
     console.log("annulla guida");
-    console.log(req.query._id);
+    var prenotazione = await Prenotazione.find({_id: req.query._id}).exec()
+    if(prenotazione.username_studente!=req.loggedUser.username_studente){
+        res.status(401).json({
+            error: "non puoi cancellare una guida non tua"
+        });
+        return;
+    }
     Prenotazione.deleteOne({_id: req.query._id})
     .then(()=>{
         res.status(200).json({message: "guida cancellata con successo"});
@@ -96,8 +102,7 @@ router.delete('/annullaGuida', (req,res)=>{
 
 router.get('/mieGuide', async(req,res)=>{
     //Richiesta guide studente
-    const query = req.query;
-    const user_stud = query.username_stud;
+    const user_stud = req.loggedUser.username_studente;
     if (!user_stud){
         res.status(400).json({ error: 'Studente non specificato' });
         return;
@@ -125,8 +130,5 @@ router.get('/mieGuide', async(req,res)=>{
     })
     res.status(200).json(guide);
 });
-
-
-
 
 module.exports = router;

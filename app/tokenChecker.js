@@ -7,9 +7,9 @@ const tokenChecker = function(req, res, next) {
 
 	// if there is no token
 	if (!token) {
-		return res.status(401).send({ 
+		return res.status(403).send({ 
 			success: false,
-			message: 'No token provided.'
+			error: 'No token provided.'
 		});
 	}
 
@@ -18,7 +18,7 @@ const tokenChecker = function(req, res, next) {
 		if (err) {
 			return res.status(403).send({
 				success: false,
-				message: 'Failed to authenticate token.'
+				error: 'Failed to authenticate token.'
 			});		
 		} else {
 			// if everything is good, save to request for use in other routes

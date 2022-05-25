@@ -1,10 +1,25 @@
-var my_id="foglio_rosa07589"
+function getCookie(cname) {
+    let name = cname + "=";
+    let ca = document.cookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+
+
 
 visualizza_mie_guide();
 
 function visualizza_mie_guide(){
     var mie_prenotazioni=document.getElementById("visualizza guide");
-    fetch("http://localhost:8080/api/v1/prenotazioni/mieGuide?username_stud="+my_id,{
+    fetch("http://localhost:8080/api/v1/prenotazioni/mieGuide?token="+getCookie("token"),{
         method:"GET",
         headers: {
             'Content-Type': 'application/json',
@@ -13,7 +28,7 @@ function visualizza_mie_guide(){
     })
     .then((resp)=>{
         
-        if(resp.status==404 || resp.status==500 || resp.status==400){
+        if(resp.status==404 || resp.status==500 || resp.status==400 || resp.status==403){
             
             resp.json().then((res)=>{
                 alert(res.error);
@@ -47,7 +62,7 @@ function visualizza_mie_guide(){
 function annullaGuida(){
     var box=document.getElementById("box")
     var id_guida=box.value;
-    fetch("http://localhost:8080/api/v1/prenotazioni/annullaGuida?_id="+id_guida,{
+    fetch("http://localhost:8080/api/v1/prenotazioni/annullaGuida?token="+getCookie("token")+"&_id="+id_guida,{
         method:"DELETE",
         headers: {
             'Content-Type': 'application/json',
@@ -60,7 +75,7 @@ function annullaGuida(){
             if(resp.status==200){
                 alert(res.message);
             }
-            else if(resp.status==500){
+            else if(resp.status==500 || resp.status==401 ||resp.status==403 ){
                 alert(res.error);
             }
         })

@@ -1,7 +1,24 @@
-var username_stud = "1q2w3e4r"
+const { resourceUsage } = require("process");
+
+function getCookie(cname) {
+    let name = cname + "=";
+    let ca = document.cookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+
+
 function mieGuide()
 {   
-    fetch("http://localhost:8080/api/v1/prenotazioni/mieGuide?username_stud="+username_stud,{
+    fetch("http://localhost:8080/api/v1/prenotazioni/mieGuide?token="+getCookie("token"),{
         method:"GET",
         headers: {
             'Content-Type': 'application/json',
@@ -13,7 +30,12 @@ function mieGuide()
         if(resp.status==400){
             alert(res.message+"\n Ops, qualcosa è andato storto!");
             return;
-        }else if(resp.status==404){
+        }
+        else if(resp.status==403){
+            alert("error: "+res.error);
+            return;
+        }
+        else if(resp.status==404){
             alert(res.message+"\n Questo studente non esiste!");
             return
         }

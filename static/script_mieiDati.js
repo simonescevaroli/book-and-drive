@@ -1,7 +1,21 @@
-var student_id = '0123'
+function getCookie(cname) {
+    let name = cname + "=";
+    let ca = document.cookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+
 
 function mostraDatiPersonali(){
-    fetch("http://localhost:8080/api/v1/studenti/me?id=" + student_id,{
+    fetch("http://localhost:8080/api/v1/studenti/token="+getCookie("token"),{
         method:"GET",
         headers: {
             'Content-Type': 'application/json',
@@ -16,7 +30,10 @@ function mostraDatiPersonali(){
         }else if(resp.status==404){
             alert(res.message+"\n Questo studente non esiste!");
             return
-        }
+        }else if(resp.status==403){
+          alert("error: "+res.error);
+          return
+      }
 
         // get html IDs
         var foglioRosa = document.getElementById("foglio_rosa");
