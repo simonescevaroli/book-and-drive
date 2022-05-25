@@ -10,9 +10,9 @@ const Segreteria = require('./models/segreteria.js');
 
 router.get('/me', async (req,res)=>{
     // visualizza dati personali studente
-
+    var username_studente= req.loggedUser.username_studente;
     try{
-        let studente = await Studente.findOne({_id: req.query.id});
+        let studente = await Studente.findOne({_id: username_studente});
         res.status(200).json({
             self: '/api/v1/studenti/' + studente.id,
             foglio_rosa: studente._id,
@@ -31,6 +31,5 @@ router.get('/me', async (req,res)=>{
         })
     }
 });
-
 
 module.exports = router;
