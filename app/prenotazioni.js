@@ -100,11 +100,9 @@ router.delete('/annullaGuida', (req,res)=>{
 });
 
 
-
 router.get('/mieGuide', async(req,res)=>{
     //Richiesta guide studente
-    const query = req.query;
-    const user_stud = query.username_stud;
+    const user_stud = req.loggedUser.username_studente;
     if (!user_stud){
         res.status(400).json({ error: 'Studente non specificato' });
         return;
@@ -132,8 +130,5 @@ router.get('/mieGuide', async(req,res)=>{
     })
     res.status(200).json(guide);
 });
-
-
-
 
 module.exports = router;
