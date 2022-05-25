@@ -74,7 +74,7 @@ function login_segreteria(){
            window.location="menu_segreteria.html";
        }
        else{
-           alert(data.message);
+           alert(data.error);
            location.reload();
        }
    })

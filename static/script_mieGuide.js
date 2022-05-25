@@ -1,3 +1,5 @@
+const { resourceUsage } = require("process");
+
 function getCookie(cname) {
     let name = cname + "=";
     let ca = document.cookie.split(';');
@@ -28,7 +30,12 @@ function mieGuide()
         if(resp.status==400){
             alert(res.message+"\n Ops, qualcosa è andato storto!");
             return;
-        }else if(resp.status==404){
+        }
+        else if(resp.status==403){
+            alert("error: "+res.error);
+            return;
+        }
+        else if(resp.status==404){
             alert(res.message+"\n Questo studente non esiste!");
             return
         }

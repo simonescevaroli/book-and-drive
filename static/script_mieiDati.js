@@ -30,7 +30,10 @@ function mostraDatiPersonali(){
         }else if(resp.status==404){
             alert(res.message+"\n Questo studente non esiste!");
             return
-        }
+        }else if(resp.status==403){
+          alert("error: "+res.error);
+          return
+      }
 
         // get html IDs
         var foglioRosa = document.getElementById("foglio_rosa");

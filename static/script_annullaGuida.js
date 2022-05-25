@@ -28,7 +28,7 @@ function visualizza_mie_guide(){
     })
     .then((resp)=>{
         
-        if(resp.status==404 || resp.status==500 || resp.status==400){
+        if(resp.status==404 || resp.status==500 || resp.status==400 || resp.status==403){
             
             resp.json().then((res)=>{
                 alert(res.error);
@@ -75,7 +75,7 @@ function annullaGuida(){
             if(resp.status==200){
                 alert(res.message);
             }
-            else if(resp.status==500 || resp.status==401){
+            else if(resp.status==500 || resp.status==401 ||resp.status==403 ){
                 alert(res.error);
             }
         })
