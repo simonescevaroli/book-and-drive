@@ -77,7 +77,7 @@ router.post('/prenotaGuida',async (req,res)=>{
 
 });
 
-router.delete('/annullaGuida', (req,res)=>{
+router.delete('/annullaGuida', async (req,res)=>{
     //annulla una prenotazione
     console.log("annulla guida");
     var prenotazione = await Prenotazione.find({_id: req.query._id}).exec()
