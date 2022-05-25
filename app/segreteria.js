@@ -14,7 +14,7 @@ router.get('/guideStudenti', async (req,res)=>{
         return {
             self: "api/v1/prenotazioni/" + prenot.id,
             studente: prenot.nominativo_studente,
-            slot: prenot.slot.toISOString(),
+            slot: prenot.slot.toLocaleString(),
             istruttore: prenot.username_istruttore,
             presenza: prenot.presenza
         }
