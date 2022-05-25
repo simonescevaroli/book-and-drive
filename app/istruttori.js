@@ -101,5 +101,32 @@ router.get('/verificaDiponibilita',async (req,res)=>{
 
 });
     
+router.get('/prenotazioniIstruttore', async (req,res)=>{
+    var username_istruttore=req.loggedUser.username_istruttore;
+    if(!username_istruttore){
+        res.status(404).json({
+            success: false,
+            description: 'Nessun username trovato nel token'
+       })
+       return;
+    }
+    var prenotazioni_istruttore= await Prenotazione.find({username_istruttore:username_istruttore})
+
+
+    if(prenotazioni_istruttore.length==0){
+        res.status(200).json({
+            success: true,
+            description: 'Nessuna prenotazione per istruttore con id '+username_istruttore
+       })
+       return
+    }
+    else{
+        res.status(200).json({
+            success: true,
+            prenotazioni_istruttore:prenotazioni_istruttore
+        })
+        
+    }
+});
 
 module.exports = router;
