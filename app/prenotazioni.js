@@ -11,8 +11,7 @@ const Segreteria = require('./models/segreteria.js');
 
 router.post('/prenotaGuida',async (req,res)=>{
     //Prenota una guida
-    
-    var id_studente=req.query.username_studente;
+    var id_studente=req.loggedUser.username_studente;
     if( req.body.slot[10]!=="T" || req.body.slot[23]!=="Z"){
         res.status(400).json({error: "slot temporale non fornito in formato ISO 8601"});
         return;
@@ -67,7 +66,8 @@ router.post('/prenotaGuida',async (req,res)=>{
         res.status(201).json({
             
             message: "guida prenotata con successo",
-            self:'/api/v1/Prenotazioni/'+prenotazione._id
+            self:'/api/v1/Prenotazioni/'+prenotazione._id,
+            prenotazione: prenotazione
         });
     })
     .catch((err)=>{ 
