@@ -80,7 +80,13 @@ router.post('/prenotaGuida',async (req,res)=>{
 router.delete('/annullaGuida', (req,res)=>{
     //annulla una prenotazione
     console.log("annulla guida");
-    console.log(req.query._id);
+    var prenotazione = await Prenotazione.find({_id: req.query._id}).exec()
+    if(prenotazione.username_studente!=req.loggedUser.username_studente){
+        res.status(401).json({
+            error: "non puoi cancellare una guida non tua"
+        });
+        return;
+    }
     Prenotazione.deleteOne({_id: req.query._id})
     .then(()=>{
         res.status(200).json({message: "guida cancellata con successo"});
@@ -92,6 +98,7 @@ router.delete('/annullaGuida', (req,res)=>{
             error: ''+err})
     })
 });
+
 
 
 router.get('/mieGuide', async(req,res)=>{
