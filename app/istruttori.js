@@ -9,8 +9,7 @@ const Segreteria = require('./models/segreteria.js');
 
 router.get('/visualizzaImpegni', async (req,res)=>{
     //Visualizza le guide prenotate con me (istruttore)
-    const query = req.query;
-    const istr = query.id;
+    const istr = req.loggedUser.username_istruttore;
 
     try{
         let prenotazioni = await Prenotazione.find({username_istruttore:istr}); //array of prenotazione with id_istruttore equal to istr
