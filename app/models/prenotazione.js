@@ -7,5 +7,5 @@ module.exports = mongoose.model('Prenotazione', new Schema({
         username_studente:{type:String},
         nominativo_studente: {type:String},
         username_istruttore: {type:String},
-        presenza: {type:Boolean}
+        presenza: {type:Boolean,default: true}
     }));
