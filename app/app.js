@@ -10,6 +10,7 @@ const studenti = require('./studenti.js')
 const autenticazione_studenti=require('./autenticazione_studenti.js')
 const autenticazione_istruttori=require('./autenticazione_istruttori.js')
 const autenticazione_segreteria=require('./autenticazione_segreteria.js')
+const registrazione=require('./registrazione.js')
 
 const tokenChecker=require('./tokenChecker.js')
 
@@ -25,6 +26,7 @@ app.use('/', express.static('static'));
 app.use('/api/v1/autenticazione_studenti', autenticazione_studenti);
 app.use('/api/v1/autenticazione_istruttori', autenticazione_istruttori); 
 app.use('/api/v1/autenticazione_segreteria', autenticazione_segreteria); 
+app.use('/api/v1/registrazione',registrazione);
 
 app.use('/api/v1/istruttori', tokenChecker);
 app.use('/api/v1/prenotazioni', tokenChecker);
