@@ -26,10 +26,10 @@ app.use('/api/v1/autenticazione_studenti', autenticazione_studenti);
 app.use('/api/v1/autenticazione_istruttori', autenticazione_istruttori); 
 app.use('/api/v1/autenticazione_segreteria', autenticazione_segreteria); 
 
-/*
-    route with tokenChecker for istruttori, studenti, prenotazioni
-    new version of istruttori, studenti prenotazioni with token checker
-*/
+app.use('/api/v1/istruttori', tokenChecker);
+app.use('/api/v1/prenotazioni', tokenChecker);
+app.use('/api/v1/studenti', tokenChecker);
+
 app.use('/api/v1/segreteria', segreteria);
 app.use('/api/v1/istruttori', istruttori);
 app.use('/api/v1/prenotazioni', prenotazioni);
