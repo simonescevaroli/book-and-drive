@@ -271,7 +271,7 @@ paths:
             description: 'This token is available after the login and is used to contain the role and the username of the user' 
       responses:
         '404':
-          description: 'undefined username in the token'
+          description: 'username in the token not exists in db'
           content:
              application/json:
               schema:
@@ -590,7 +590,7 @@ paths:
           schema:
             type: string
           required: true
-          description: 'contains the id that the user want to remove'
+          description: 'contains the id of the drive that the user want to remove'
       responses:
         '200':
           description: 'reservation removed successfully'
@@ -630,11 +630,10 @@ paths:
       summary: "Istructor prenotation visualization."
       parameters: 
         - in: query
-          name: id
+          name: token
           schema:
             type: string
-          required: true
-          description: "The username (username_istruttore) of an istructor"
+            description: This token is available after the login and is used to contain the role and the username of the user 
       responses:
         '200':
           description: 'Prenotation found, data correctly retrieved or the data was correctly retrieved and but there are no appointments.'
