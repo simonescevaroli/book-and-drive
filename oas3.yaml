@@ -18,10 +18,10 @@ paths:
       summary: View student's prenotations
       parameters:
         - in: query
-          name: username_stud
+          name: token
           schema:
             type: string
-          description: The username (foglio rosa) of a student
+          description: This token is available after the login and is used to contain the role and the username of the user
       responses:
         '400':
           description: 'The student is not specified or something went wrong during the query'
@@ -41,6 +41,36 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Prenotazione'
+        '404':
+          description: 'error student not found'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'describes what kind of error is happend'
+        '500':
+          description: 'error in database'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'describes what kind of error is happend on the db side'
+        '403':
+          description: 'error in token checker'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'the token was invalid or not defined'
 
   /segreteria/guideStudenti:
     get:
@@ -64,10 +94,10 @@ paths:
       summary: "Student personal data visualization."
       parameters:
         - in: query
-          name: id
+          name: token
           schema:
             type: string
-          description: The username (foglio rosa) of a student
+            description: This token is available after the login and is used to contain the role and the username of the user 
       responses:
         '200':
           description: 'User found, data correctly retrieved.'
@@ -107,6 +137,16 @@ paths:
                   error:
                     type: string
                     description: 'Cannot load user data'
+        '403':
+          description: 'error in token checker'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'the token was invalid or not defined'
   
   /segreteria/resocontoStudenti:
     get:
@@ -130,6 +170,10 @@ paths:
       summary: Retrieve available istructors
       parameters:
         - in: query
+          name: token
+          schema:
+            type: string
+            description: This token is available after the login and is used to contain the role and the username of the user 
           name: slot
           schema:
             type: string
@@ -149,10 +193,9 @@ paths:
                     _id:
                       type: string
                       description: 'username_istruttore '
-                example:
-                  - _id: "mario.rossi"
-                  - _id: "giuseppe.verdi"
-                  - _id: "mario.rossi-1"
+                    telefono:
+                      type: string
+                      description: 'phone number of the istructors'
         '203':
           description: 'No available istructors for that time slot' 
           content:
@@ -162,7 +205,17 @@ paths:
                 properties:
                   message:
                     type: string
-                    description: 'No istructors available' 
+                    description: 'No istructors available'
+        '400':
+          description: 'time slot error' 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: 'the format of the date and time was not as required'
         '404':
           description: 'Server error'
           content:
@@ -173,7 +226,16 @@ paths:
                   error:
                     type: string
                     description: 'describes the error that took place in the server' 
-                
+        '403':
+          description: 'error in token checker'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'the token was invalid or not defined'
                 
   /prenotazioni/prenotaGuida:
     post:
@@ -182,11 +244,16 @@ paths:
       summary: 'Make new reservation'
       parameters:
         - in: query
-          name: username_studente
+          name: token
           schema:
             type: string
-          required: true
-          description: 'The username of the student that is bookint the slot for a drive'
+            description: This token is available after the login and is used to contain the role and the username of the user 
+          name: slot
+          schema:
+            type: string
+            format: date-time
+            description: This token is available after the login and is used to contain the role and the username of the user 
+          
       requestBody:
         content:
           application/json:
@@ -214,7 +281,7 @@ paths:
                 properties:
                   URI:
                     type: string 
-                    description: 'link to the prenotation that already exsists: /api/v1/Prenotazioni/id'
+                    description: 'URI: link to the prenotation that already exsists: /api/v1/prenotazioni/id'
                   message:
                     type: string
                     description: 'message to display for the user in wich the server reports that the prenotation already exists'
@@ -225,12 +292,14 @@ paths:
               schema:
                 type: object
                 properties:
-                  URI:
+                  sleg:
                     type: string 
-                    description: 'link to the new prenotation: /api/v1/Prenotazioni/id'
+                    description: 'URI: link to the new prenotation: /api/v1/prenotazioni/id'
                   message:
                     type: string
                     description: 'message to display for the user: booking successfully'
+                  prenotazione:
+                    $ref:'#/components/schemas/Prenotazione'
         '404':
           description: 'Server error'
           content:
@@ -240,7 +309,27 @@ paths:
                 properties:
                   error:
                     type: string
-                    description: 'describes the error that took place in the server' 
+                    description: 'describes the error that took place in the server'
+        '400':
+          description: 'time slot error or username stu/istr not found' 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: 'the format of the date and time was not as required or the student/istructor username does not exists'
+        '403':
+          description: 'error in token checker'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'the token was invalid or not defined'
 
 
   /prenotazioni/annullaGuida:
@@ -266,7 +355,7 @@ paths:
                   message:
                     type: string
                     description: 'successfull message for the user'
-        '404':
+        '401':
           description: 'Server error'
           content:
              application/json:
@@ -276,7 +365,16 @@ paths:
                   error:
                     type: string
                     description: 'describes the error that took place in the server'
-
+        '403':
+          description: 'error in token checker'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'the token was invalid or not defined'
   /istruttori/visualizzaImpegni:
     get:
       description: >-
@@ -291,11 +389,13 @@ paths:
           description: "The username (username_istruttore) of an istructor"
       responses:
         '200':
-          description: 'Prenotation found, data correctly retrieved.'
+          description: 'Prenotation found, data correctly retrieved or the data was correctly retrieved and but there are no appointments.'
           content:
             application/json:
               schema:
                 type: array
+                items:
+                  $ref: '#/components/schemas/Prenotazione'
         '400':
           description: 'Server error'
           content:
@@ -306,7 +406,16 @@ paths:
                   error:
                     type: string
                     description: 'Cannot load user prenotation'
-
+        '403':
+          description: 'error in token checker'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'the token was invalid or not defined'
           
 components:
   schemas:
