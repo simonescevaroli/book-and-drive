@@ -126,16 +126,8 @@ router.get('/mieGuide', async(req,res)=>{
     res.status(200).json(guide);
 });
 
-router.get('/guideDelGiorno',(req,res)=>{
-    console.log("trova le guide del giorno slot dove l istruttore è chi ha chiamato la funzione ")
-});
 
-router.get('/modificaPresenza',(req,res)=>{
-    console.log("modifica la presenza di uno studente ad una guida")
-});
-
-
-router.update('/modificaPresenza',(req,res)=>{
+router.post('/modificaPresenza',(req,res)=>{
 
     const username_istruttore = req.loggedUser.username_istruttore;
     const id_guida= req.query.id_guida;
