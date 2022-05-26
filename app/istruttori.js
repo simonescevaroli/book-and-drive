@@ -103,10 +103,11 @@ router.get('/verificaDiponibilita',async (req,res)=>{
     
 router.get('/prenotazioniIstruttore', async (req,res)=>{
     var username_istruttore=req.loggedUser.username_istruttore;
-    if(!username_istruttore){
+    var istruttore= await Istruttore.findOne({_id:username_istruttore}).exec();
+    if(!istruttore.username_istruttore){
         res.status(404).json({
             success: false,
-            description: 'Nessun username trovato nel token'
+            description: 'username istruttore non esiste'
        })
        return;
     }
@@ -114,9 +115,9 @@ router.get('/prenotazioniIstruttore', async (req,res)=>{
 
 
     if(prenotazioni_istruttore.length==0){
-        res.status(200).json({
+        res.status(202).json({
             success: true,
-            description: 'Nessuna prenotazione per istruttore con id '+username_istruttore
+            message: 'Nessuna prenotazione per istruttore con id '+username_istruttore
        })
        return
     }
