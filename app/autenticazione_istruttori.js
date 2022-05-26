@@ -34,7 +34,7 @@ router.post('', async function(req, res) {
 	}
 	var token = jwt.sign(payload, 'a1', options);//a1 da cambiare con stringa segreta per l encoding del token
 
-	res.json({
+	res.status(200).json({
 		success: true,
 		message: 'Enjoy your token!',
 		token: token,
