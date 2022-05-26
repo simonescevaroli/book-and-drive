@@ -11,6 +11,133 @@ servers:
     description: Localhost
     
 paths:
+  /autenticazione_studenti:
+    post:
+      description: >-
+        Authenticate a student that request to use the functionalities accessible for the students
+      summary: Authenticate a student
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              required:
+                - username_studente
+                - password
+              properties:
+                username_studente:
+                  type: string
+                  description: 'The username of the student'
+                password:
+                  type: string
+                  description: 'The passsword that the student used to sign in the application'
+      responses:
+        '400':
+          description: 'The student username was not found or the password was wrong'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'Studente non trovato o password errata'
+        '200':
+          description: 'successfull authenitcation and token created and send to the user'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: 'token that contains the username, the role of the user, and the time  of expritation. All encoded with a secret key '
+                  
+          
+  /autenticazione_segreteria:
+    post:
+      description: >-
+        Authenticate a secretariat that request to use the functionalities accessible for the students
+      summary: Authenticate a secretariat
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              required:
+                - username_secretariat
+                - password
+              properties:
+                username_secretariat:
+                  type: string
+                  description: 'The username of the secretariat'
+                password:
+                  type: string
+                  description: 'The passsword that the secretariat'
+      responses:
+        '400':
+          description: 'The secretariat username was not found or the password was wrong'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'username_segreteria non trovato o password errata'
+        '200':
+          description: 'successfull authenitcation and token created and send to the user'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: 'token that contains the username, the role of the user, and the time  of expritation. All encoded with a secret key '
+  
+  /autenticazione_istruttori:
+    post:
+      description: >-
+        Authenticate a student that request to use the functionalities accessible for the students
+      summary: Authenticate an istructor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              required:
+                - username_istruttore
+                - password
+              properties:
+                username_studente:
+                  type: string
+                  description: 'The username of the istructor'
+                password:
+                  type: string
+                  description: 'The passsword that the istructor used to sign in the application'
+      responses:
+        '400':
+          description: 'The istructor username was not found or the password was wrong'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'Studente non trovato o password errata'
+        '200':
+          description: 'successfull authenitcation and token created and send to the user'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: 'token that contains the username, the role of the user, and the time  of expritation. All encoded with a secret key '
+            
   /prenotazioni/mieGuide:
     get:
       description: >-
@@ -21,7 +148,7 @@ paths:
           name: token
           schema:
             type: string
-          description: This token is available after the login and is used to contain the role and the username of the user
+          description: 'This token is available after the login and is used to contain the role and the username of the user'
       responses:
         '400':
           description: 'The student is not specified or something went wrong during the query'
@@ -71,7 +198,124 @@ paths:
                   error:
                     type: string
                     description: 'the token was invalid or not defined'
-
+  /prenotazioni/modificaPresenza:
+    post:
+      description: >-
+        Change the presence of a student to a drive
+      summary: Change presence of a student
+      parameters:
+        - in: query
+          name: token
+          schema:
+            type: string
+            description: 'This token is available after the login and is used to contain the role and the username of the user' 
+          name: id_guida
+          schema:
+            type: string
+            description: 'the id of the drive wich the student has attended or not'
+      responses:
+        '404':
+          description: 'Server error no drive or istructos found or database error'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'database error'
+        '403':
+          description: 'error in token checker'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'the token was invalid or not defined'
+        '401':
+          description: 'lack of authorization'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: ' error because the istructor can only change the students presence in the drive in which he is istructor'
+        '200':
+          description: 'successfull update'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: 'describe if the modification was successfull(true) or failed(false)'
+                  data:
+                    type: object
+                    description: 'the data returned by the update function of mongoose' 
+      
+  /istruttori/prenotazioniIstruttore:
+    post:
+      description: >-
+        Retrieve all the drive with an istructor
+      summary: Change presence of a student
+      parameters:
+        - in: query
+          name: token
+          schema:
+            type: string
+            description: 'This token is available after the login and is used to contain the role and the username of the user' 
+      responses:
+        '404':
+          description: 'undefined username in the token'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '403':
+          description: 'error in token checker'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'the token was invalid or not defined'
+        '200':
+          description: 'successfull data retrieve'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: 'describe if the modification was successfull(true) or failed(false)'
+                  data:
+                    type: array
+                    description: 'the prenotations in which the istructor is the teacher'
+        '202':
+          description: 'successfull but there are no data'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: 'describe if the modification was successfull(true) or failed(false)'
+                  message:
+                    type: string
+                    description: 'message that says there are no prenotation for the istructor_username in the token'
+        
   /segreteria/guideStudenti:
     get:
       description: >-
@@ -253,7 +497,6 @@ paths:
             type: string
             format: date-time
             description: This token is available after the login and is used to contain the role and the username of the user 
-          
       requestBody:
         content:
           application/json:
@@ -339,6 +582,10 @@ paths:
       summary: 'Remove a reservation'
       parameters:
         - in: query
+          name: token
+          schema:
+            type: string
+            description: This token is available after the login and is used to contain the role and the username of the user 
           name: _id
           schema:
             type: string
@@ -375,6 +622,7 @@ paths:
                   error:
                     type: string
                     description: 'the token was invalid or not defined'
+  
   /istruttori/visualizzaImpegni:
     get:
       description: >-
@@ -416,7 +664,82 @@ paths:
                   error:
                     type: string
                     description: 'the token was invalid or not defined'
-          
+  
+  /segreteria/resocontoStudenti:
+    get:
+      description: >-
+        Shows the personal data of all students.
+      summary: "Student personal data visualization."
+      responses:
+        '200':
+          description: 'The data of all the students have been retrieved.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Studente'
+  /segreteria/modificaStudente:
+    put:
+      description: >-
+        Modify student data
+      summary: Modify data of a student
+      requestBody:
+        content:
+          application/json:
+              schema:
+                type: object
+                items:
+                  - foglio_rosa
+                  - nome
+                  - cognome
+                  - data_nascita
+                  - telefono
+                  - email
+                properties:
+                    foglio_rosa:
+                      type: string
+                      description: 'Foglio rosa ID (username of student account)'
+                    nome:
+                      type: string
+                      description: 'First name of student'
+                    cognome:
+                      type: string
+                      description: 'Last name of student'
+                    dataNascita:
+                      type: string
+                      format: date-time
+                      description: 'Date of birth of student'
+                    telefono:
+                      type: string
+                      description: 'Phone number of the student'
+                    email:
+                      type: string
+                      description: 'Email address of the student'
+      responses:
+        '200':
+          description: 'Student correctly modified'
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  - message
+                properties:
+                  message:
+                    type: string
+                    description: 'Operation successfully completed message'
+        '400':
+          description: 'Unexpected error'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'Error message'
+
 components:
   schemas:
   
