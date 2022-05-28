@@ -854,21 +854,7 @@ paths:
                   error:
                     type: string
                     description: 'the token was invalid or not defined'
-  
-  /segreteria/resocontoStudenti:
-    get:
-      description: >-
-        Shows the personal data of all students.
-      summary: "Student personal data visualization."
-      responses:
-        '200':
-          description: 'The data of all the students have been retrieved.'
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Studente'
+                    
   /segreteria/modificaStudente:
     put:
       description: >-
