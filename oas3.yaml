@@ -137,7 +137,198 @@ paths:
                   token:
                     type: string
                     description: 'token that contains the username, the role of the user, and the time  of expritation. All encoded with a secret key '
-            
+  /segreteria/guideStudente:
+    get:
+      description: >-
+        Gets the list of all student prenotations.
+      summary: View all student prenotations
+      parameters:
+        - in: query
+          name: _id
+          schema:
+            type: string
+          description: 'The id of the student whose prenotations you want to see'
+      responses:
+        '404':
+          description: 'The student specified does not exist'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'Questo studente non esiste, controlla se lo hai inserito correttamente!'
+        '400':
+          description: 'The student id is not passed'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'L id dello studente non è stato specificato'
+        '204':
+          description: 'The student doenst have any guide'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'Questo studente al momento non ha guide prenotate o fatte'
+        '200':
+          description: "Return all the student prenotations"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Prenotazione'
+                  
+  /registrazione/nuovoIstruttore:
+    post:
+      description: >-
+        Register a new istructor.
+      summary: Register a new istructor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              required:
+                - _id
+                - password
+                - telefono
+              properties:
+                _id:
+                  type: string
+                  description: 'The id of the istructor'
+                password:
+                  type: string
+                  description: 'The passsword that the istructor used to sign in the application'
+                telefono:
+                  type: string
+                  description: 'The phone number of the istructor'
+      responses:
+        '500':
+          description: 'Something went wrong'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'Qualcosa non è andato a buon fine'
+        '406':
+          description: 'You forgot to fill some fields'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'Ops, hai dimenticato di riempire dei campi!'
+        '201':
+          description: 'The student doenst have any guide'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mode_user:
+                    type: string
+                  username:
+                    type: string
+                  message:
+                    type: string
+                    description: 'Registrazione andata a buon fine, verrai redirezionato alla pagina di login...'
+    
+  /registrazione/nuovoStudente:
+    post:
+      description: >-
+        Register a new student.
+      summary: Register a new student
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              required:
+                - _id
+                - password
+                - nome
+                - cognome
+                - dataNascita
+                - telefono
+                - email
+              properties:
+                _id:
+                  type: string
+                  description: 'The foglio rosa ID of the student'
+                password:
+                  type: string
+                  description: 'The passsword that the student used to sign in the application'
+                nome:
+                  type: string
+                  description: 'First name of the student'
+                cognome:
+                  type: string
+                  description: 'Last name of the student'
+                dataNascita:
+                  type: string
+                  description: 'The date of birth of the student'
+                telefono:
+                  type: string
+                  description: 'The phone number of the student'
+                email:
+                  type: string
+                  description: 'The email of the student'
+      responses:
+        '500':
+          description: 'Something went wrong'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'Qualcosa non è andato a buon fine'
+        '409':
+          description: 'This student already exist'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'Questo studente esiste già nel database'
+        '406':
+          description: 'You forgot to fill some fields'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'Ops, hai dimenticato di riempire dei campi!'
+        '201':
+          description: 'The student doenst have any guide'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: 'Registrazione andata a buon fine, verrai redirezionato alla pagina di login...'
   /prenotazioni/mieGuide:
     get:
       description: >-
