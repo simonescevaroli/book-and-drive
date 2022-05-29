@@ -1,13 +1,27 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="en-US">
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta lang="it-IT">
+        <title>Book & Drive</title>
 
-<body class="container">
-    <div class="row">
+    </head>
 
-        <div class="col-md-6 col-md-offset-3" style="text-align:center; margin-bottom:48px">
-            <h1>Welcome to Book and Drive</h1>
-            <hr />
+    <body class="container">
+        <div class="row">
+
+            <div class="col-md-6 col-md-offset-3" style="text-align:center; margin-bottom:48px">
+                <h1>Benvenuto in Book & Drive!</h1>
+                <hr />
+            </div>
         </div>
-    </div>
-</body>
+        <div class="col-md-6 col-md-offset-3" style="text-align:center; margin-bottom:48px">
+            <p><big>Se possiedi già le credenziali per accedere premi su "login", altrimenti registrati ora!</big></p>
+            <button type="button" onClick="registrazioneStudente()">Registrazione studente</button>
+            <button type="button" onClick="registrazioneIstruttore()">Registrazione istruttore</button>
+            <button type="button" onClick="relocLogin()">Login</button>
+            <script src ="./script_registrazione.js"></script>
+        </div>
+        
+    </body>
 </html>
