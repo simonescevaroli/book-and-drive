@@ -132,11 +132,11 @@ router.get('/mieGuide', async(req,res)=>{
 });
 
 
-router.post('/modificaPresenza',(req,res)=>{
+router.post('/modificaPresenza',async(req,res)=>{
 
     const username_istruttore = req.loggedUser.username_istruttore;
     const id_guida= req.query.id_guida;
-    var guida=Prenotazione.findOne({_id:id_guida}).exec();
+    var guida= await Prenotazione.findOne({_id:id_guida}).exec();
     if(!guida){
         res.status(404).json({
             seccess: false,
