@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta lang="it-IT">
+        <title>Registro presenze</title>
+    </head>
+
+    <body onload="loadPrenotazioni();" style="background-color:#f5f5f5;">
+        <h1>Registro presenze</h1>
+        <p style="position: absolute; top: 0; right: 4%; width: 30; text-align:right;">
+            <img src="logo.png" alt="logo" />
+        </p>
+        <table border="1" style="border: 1px solid black; border-collapse:collapse; font-size: 20px; width: 80%;" id="tab">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Ora</th>
+                    <th>Studente</th>
+                    <th>Presenza</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <br/>
+        <br/>
+        <button type="button" onClick="back()">Annulla</button>
+        <button type="button" onClick="save_edit()">Salva</button>
+        <script src="script_registroPresenze.js"></script> 
+    </body>
+</html>
