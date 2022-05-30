@@ -105,8 +105,13 @@ function invia_dati_per_prenotazione(slot,username_istruttore){
                 location.reload();
             }
             else if(resp.status==201){
-                alert(res.message+'\nHai effettuato la prenotazione con slot orario:'+res.prenotazione.slot+" e istruttore: "+res.prenotazione.username_istruttore+'\n'+"ritorna al menù");
+                alert(res.message +
+                    '\n\nRiepilogo prenotazione:' +
+                    '\norario: ' + res.prenotazione.slot.substring(0,10) +
+                    '\nistruttore: ' + res.prenotazione.username_istruttore
+                    )
                 location.reload();
+                window.location="menu_studente.html"
             }
             else if(resp.status==400 || resp.status==403){
                 alert(res.error);

@@ -65,7 +65,7 @@ router.post('/prenotaGuida',async (req,res)=>{
         console.log("prenotazione effettuata");
         res.status(201).json({
             
-            message: "guida prenotata con successo",
+            message: "Guida prenotata con successo!",
             self:'/api/v1/Prenotazioni/'+prenotazione._id,
             prenotazione: prenotazione
         });

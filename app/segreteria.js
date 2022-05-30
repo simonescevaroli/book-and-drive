@@ -41,7 +41,7 @@ router.get('/guideStudente', async (req,res)=>{
     let prenotazioni = await Prenotazione.find({username_studente: query._id}).exec();
     // se non ha prenotazioni, ritono una stringa che lo specifica
     if(prenotazioni.length==0){
-        res.status(204).json({message:"Questo studente al momento non ha guide prenotate o fatte"});
+        res.status(202).json({message:"Questo studente al momento non ha guide prenotate o fatte"});
         return;
     }
     prenotazioni = prenotazioni.map((prenot)=>{
@@ -106,8 +106,11 @@ router.put('/modificaStudente', async (req, res)=>{
     // Modifica dati personali studente
 
     var id_studente = req.body.foglio_rosa
-    var toChange = req.body.toChange
-    var value = req.body.newValue
+    var nome = req.body.nome
+    var cognome = req.body.cognome
+    var data_nascita = req.body.data_nascita
+    var telefono = req.body.telefono
+    var email = req.body.email
 
     // Check if student exists
     var studente= await Studente.findById(id_studente).exec();
@@ -115,17 +118,11 @@ router.put('/modificaStudente', async (req, res)=>{
         res.status(404).json({error: "Non sono stati trovati studenti con questo ID"});
         return;
     }
-
-    // Check if 'toChange' is a valid field
-    if(!["nome", "cognome", "telefono", "email"].includes(toChange)){
-        res.status(404).json({error: "Campo selezionato non valido"})
-        return;
-    }
+    var data = new Date(data_nascita)
 
     // Update student
     var filter = {_id: id_studente}
-    var update = {}
-    update[toChange] = value
+    var update = {nome: nome, cognome: cognome, dataNascita: data, telefono: telefono, email: email}
     Studente.findOneAndUpdate(filter, update, {returnOriginal:false})
     .then((updated) => {
         res.status(200).json({

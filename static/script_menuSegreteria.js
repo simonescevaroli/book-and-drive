@@ -13,7 +13,7 @@ function get_page_guideStudente(){
 }
 function get_page_datiStudente(){
     
-    alert("funzionalità non ancora implementata")
+    window.location="datiStudente.html"
 }
 function get_help_segreteria(){
     alert("funzione non ancora disponibile");
