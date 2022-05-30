@@ -41,7 +41,7 @@ router.get('/guideStudente', async (req,res)=>{
     let prenotazioni = await Prenotazione.find({username_studente: query._id}).exec();
     // se non ha prenotazioni, ritono una stringa che lo specifica
     if(prenotazioni.length==0){
-        res.status(204).json({message:"Questo studente al momento non ha guide prenotate o fatte"});
+        res.status(202).json({message:"Questo studente al momento non ha guide prenotate o fatte"});
         return;
     }
     prenotazioni = prenotazioni.map((prenot)=>{

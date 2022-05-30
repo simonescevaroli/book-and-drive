@@ -50,7 +50,7 @@ function visionaGuide(){
         }else if(resp.status==404){
             alert(res.error);
             return;
-        }else if(resp.status==204){
+        }else if(resp.status==202){
             alert("Questo studente al momento non ha guide prenotate o fatte");
             return;
         }
