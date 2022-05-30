@@ -6,6 +6,7 @@ const Studente = require('./models/studente.js');
 const Prenotazione = require('./models/prenotazione.js');
 const Istruttore = require('./models/istruttore.js');
 const Segreteria = require('./models/segreteria.js');
+const studente = require('./models/studente.js');
 
 router.get('/guideStudenti', async (req,res)=>{
     //Visualizza le guide prenotate di tutti gli studenti
@@ -74,5 +75,30 @@ router.get('/resocontoStudenti', async (req,res)=>{
     res.status(200).json(studenti);
 });
 
+router.get('/resocontoStudente', async(req, res)=>{
+    //visualizza dati di un determinato studente
+    const query = req.query;
+    const idFR = query.id;
+
+    try{
+        let studente = await Studente.findById(idFR);
+        res.status(200).json({
+        self: '/api/v1/studenti/' + studente.id,
+        foglio_rosa: studente._id,
+        nome: studente.nome,
+        cognome: studente.cognome,
+        dataNascita: studente.dataNascita.toISOString(),
+        telefono: studente.telefono,
+        email: studente.email
+        })
+    }
+    catch(err){
+        res.status(400).json({
+            confirm: 'fail',
+            error: err.message,
+            description: 'Impossibile caricare dati personali'
+        })
+    }
+});
 
 module.exports = router;
