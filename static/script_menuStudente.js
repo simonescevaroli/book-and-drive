@@ -17,3 +17,6 @@ function get_page_mieiDati(){
 function get_help_studente(){
     alert("funzione non ancora disponibile");
 }
+function logout(){
+    window.location="login.html"
+}

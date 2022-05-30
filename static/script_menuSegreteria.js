@@ -18,3 +18,6 @@ function get_page_datiStudente(){
 function get_help_segreteria(){
     alert("funzione non ancora disponibile");
 }
+function logout(){
+    window.location="login.html"
+}

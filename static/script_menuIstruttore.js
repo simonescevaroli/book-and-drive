@@ -13,3 +13,6 @@ function get_page_modDisponibilita(){
 function get_help_istruttore(){
     alert("funzione non ancora disponibile");
 }
+function logout(){
+    window.location="login.html"
+}
