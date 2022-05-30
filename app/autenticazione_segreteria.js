@@ -32,7 +32,7 @@ router.post('', async function(req, res) {
 	var options = {
 		expiresIn: 86400 // expires in 24 hours
 	}
-	var token = jwt.sign(payload,"a1", options); //cambiare la stringa segreta per l encoding
+	var token = jwt.sign(payload,process.env.SUPER_SECRET, options); //cambiare la stringa segreta per l encoding
 
 	res.json({
 		success: true,
