@@ -104,7 +104,7 @@ router.get('/verificaDiponibilita',async (req,res)=>{
 router.get('/prenotazioniIstruttore', async (req,res)=>{
     var username_istruttore=req.loggedUser.username_istruttore;
     var istruttore= await Istruttore.findOne({_id:username_istruttore}).exec();
-    if(!istruttore.username_istruttore){
+    if(!istruttore._id){
         res.status(404).json({
             success: false,
             description: 'username istruttore non esiste'
