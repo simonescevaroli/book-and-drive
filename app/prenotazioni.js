@@ -131,4 +131,49 @@ router.get('/mieGuide', async(req,res)=>{
     res.status(200).json(guide);
 });
 
+
+router.post('/modificaPresenza',(req,res)=>{
+
+    const username_istruttore = req.loggedUser.username_istruttore;
+    const id_guida= req.query.id_guida;
+    var guida=Prenotazione.findOne({_id:id_guida}).exec();
+    if(!guida){
+        res.status(404).json({
+            seccess: false,
+            error: "guida non trovata"
+
+        })
+        return;
+    }
+    if(!username_istruttore){
+        res.status(404).json({
+            seccess: false,
+            error: "username istruttore non trovato"
+        })
+        return;
+    }
+    if(guida.username_istruttore!=username_istruttore){
+        res.status(401).json({
+            success: false,
+            error: "non puoi cambiare la presenza di una guida di un altro istruttore"
+        })
+        return;
+    }
+    Prenotazione.updateOne({_id:id_guida},{$set: {presenza:!guida.presenza}}).exec()
+    .then((data)=>{
+        res.status(200).json({
+            success:true,
+            data:data,
+            message: "modifica riuscita"
+        })
+    })
+    .catch((err)=>{
+        res.status(404).json({
+            success: false,
+            error: "update aborted"
+        })
+    })
+
+});
+
 module.exports = router;
