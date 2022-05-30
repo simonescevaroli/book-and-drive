@@ -39,7 +39,7 @@ function mandaRichiestaStudente(){
             alert(res.error);
             return;
         }
-        alert("Registrazione andata a buon fine, verrai redirezionato alla pagina di login...");
+        alert("Registrazione andata a buon fine\nRicorda che il tuo username per accedere è l'ID del foglio rosa!\nVerrai redirezionato alla pagina di login...");
         // Un piccolo timer prima di essere redirezionato
         await new Promise(r => setTimeout(r, 1000));
         relocLogin();
@@ -73,7 +73,7 @@ function mandaRichiestaIstruttore(){
         if(res.mod_user){
             alert("ATTENZIONE!!!\nIl tuo username per accedere sarà\n\n"+res.username+"\n\nin quanto esiste un tuo omonimo.\nRegistrazione andata a buon fine, verrai redirezionato alla pagina di login...");
         }else{
-            alert("Registrazione andata a buon fine, verrai redirezionato alla pagina di login...");
+            alert("Registrazione andata a buon fine\nRicorda che il tuo username per accedere è 'nome.cognome'!\nVerrai redirezionato alla pagina di login...");
         }
         
         // Un piccolo timer prima di essere redirezionato

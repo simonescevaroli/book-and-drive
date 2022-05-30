@@ -11,6 +11,324 @@ servers:
     description: Localhost
     
 paths:
+  /autenticazione_studenti:
+    post:
+      description: >-
+        Authenticate a student that request to use the functionalities accessible for the students
+      summary: Authenticate a student
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              required:
+                - username_studente
+                - password
+              properties:
+                username_studente:
+                  type: string
+                  description: 'The username of the student'
+                password:
+                  type: string
+                  description: 'The passsword that the student used to sign in the application'
+      responses:
+        '400':
+          description: 'The student username was not found or the password was wrong'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'Studente non trovato o password errata'
+        '200':
+          description: 'successfull authenitcation and token created and send to the user'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: 'token that contains the username, the role of the user, and the time  of expritation. All encoded with a secret key '
+                  
+          
+  /autenticazione_segreteria:
+    post:
+      description: >-
+        Authenticate a secretariat that request to use the functionalities accessible for the students
+      summary: Authenticate a secretariat
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              required:
+                - username_secretariat
+                - password
+              properties:
+                username_secretariat:
+                  type: string
+                  description: 'The username of the secretariat'
+                password:
+                  type: string
+                  description: 'The passsword that the secretariat'
+      responses:
+        '400':
+          description: 'The secretariat username was not found or the password was wrong'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'username_segreteria non trovato o password errata'
+        '200':
+          description: 'successfull authenitcation and token created and send to the user'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: 'token that contains the username, the role of the user, and the time  of expritation. All encoded with a secret key '
+  
+  /autenticazione_istruttori:
+    post:
+      description: >-
+        Authenticate a student that request to use the functionalities accessible for the students
+      summary: Authenticate an istructor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              required:
+                - username_istruttore
+                - password
+              properties:
+                username_studente:
+                  type: string
+                  description: 'The username of the istructor'
+                password:
+                  type: string
+                  description: 'The passsword that the istructor used to sign in the application'
+      responses:
+        '400':
+          description: 'The istructor username was not found or the password was wrong'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'Studente non trovato o password errata'
+        '200':
+          description: 'successfull authenitcation and token created and send to the user'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: 'token that contains the username, the role of the user, and the time  of expritation. All encoded with a secret key '
+  /segreteria/guideStudente:
+    get:
+      description: >-
+        Gets the list of all student prenotations.
+      summary: View all student prenotations
+      parameters:
+        - in: query
+          name: _id
+          schema:
+            type: string
+          description: 'The id of the student whose prenotations you want to see'
+      responses:
+        '404':
+          description: 'The student specified does not exist'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'Questo studente non esiste, controlla se lo hai inserito correttamente!'
+        '400':
+          description: 'The student id is not passed'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'L id dello studente non è stato specificato'
+        '204':
+          description: 'The student doenst have any guide'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'Questo studente al momento non ha guide prenotate o fatte'
+        '200':
+          description: "Return all the student prenotations"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Prenotazione'
+                  
+  /registrazione/nuovoIstruttore:
+    post:
+      description: >-
+        Register a new istructor.
+      summary: Register a new istructor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              required:
+                - _id
+                - password
+                - telefono
+              properties:
+                _id:
+                  type: string
+                  description: 'The id of the istructor'
+                password:
+                  type: string
+                  description: 'The passsword that the istructor used to sign in the application'
+                telefono:
+                  type: string
+                  description: 'The phone number of the istructor'
+      responses:
+        '500':
+          description: 'Something went wrong'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'Qualcosa non è andato a buon fine'
+        '406':
+          description: 'You forgot to fill some fields'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'Ops, hai dimenticato di riempire dei campi!'
+        '201':
+          description: 'The student doenst have any guide'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mode_user:
+                    type: string
+                  username:
+                    type: string
+                  message:
+                    type: string
+                    description: 'Registrazione andata a buon fine, verrai redirezionato alla pagina di login...'
+    
+  /registrazione/nuovoStudente:
+    post:
+      description: >-
+        Register a new student.
+      summary: Register a new student
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              required:
+                - _id
+                - password
+                - nome
+                - cognome
+                - dataNascita
+                - telefono
+                - email
+              properties:
+                _id:
+                  type: string
+                  description: 'The foglio rosa ID of the student'
+                password:
+                  type: string
+                  description: 'The passsword that the student used to sign in the application'
+                nome:
+                  type: string
+                  description: 'First name of the student'
+                cognome:
+                  type: string
+                  description: 'Last name of the student'
+                dataNascita:
+                  type: string
+                  description: 'The date of birth of the student'
+                telefono:
+                  type: string
+                  description: 'The phone number of the student'
+                email:
+                  type: string
+                  description: 'The email of the student'
+      responses:
+        '500':
+          description: 'Something went wrong'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'Qualcosa non è andato a buon fine'
+        '409':
+          description: 'This student already exist'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'Questo studente esiste già nel database'
+        '406':
+          description: 'You forgot to fill some fields'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'Ops, hai dimenticato di riempire dei campi!'
+        '201':
+          description: 'The student doenst have any guide'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: 'Registrazione andata a buon fine, verrai redirezionato alla pagina di login...'
   /prenotazioni/mieGuide:
     get:
       description: >-
@@ -18,10 +336,10 @@ paths:
       summary: View student's prenotations
       parameters:
         - in: query
-          name: username_stud
+          name: token
           schema:
             type: string
-          description: The username (foglio rosa) of a student
+          description: 'This token is available after the login and is used to contain the role and the username of the user'
       responses:
         '400':
           description: 'The student is not specified or something went wrong during the query'
@@ -41,7 +359,154 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Prenotazione'
-
+        '404':
+          description: 'error student not found'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'describes what kind of error is happend'
+        '500':
+          description: 'error in database'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'describes what kind of error is happend on the db side'
+        '403':
+          description: 'error in token checker'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'the token was invalid or not defined'
+  /prenotazioni/modificaPresenza:
+    post:
+      description: >-
+        Change the presence of a student to a drive
+      summary: Change presence of a student
+      parameters:
+        - in: query
+          name: token
+          schema:
+            type: string
+            description: 'This token is available after the login and is used to contain the role and the username of the user' 
+          name: id_guida
+          schema:
+            type: string
+            description: 'the id of the drive wich the student has attended or not'
+      responses:
+        '404':
+          description: 'Server error no drive or istructos found or database error'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'database error'
+        '403':
+          description: 'error in token checker'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'the token was invalid or not defined'
+        '401':
+          description: 'lack of authorization'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: ' error because the istructor can only change the students presence in the drive in which he is istructor'
+        '200':
+          description: 'successfull update'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: 'describe if the modification was successfull(true) or failed(false)'
+                  data:
+                    type: object
+                    description: 'the data returned by the update function of mongoose' 
+      
+  /istruttori/prenotazioniIstruttore:
+    post:
+      description: >-
+        Retrieve all the drive with an istructor
+      summary: Change presence of a student
+      parameters:
+        - in: query
+          name: token
+          schema:
+            type: string
+            description: 'This token is available after the login and is used to contain the role and the username of the user' 
+      responses:
+        '404':
+          description: 'username in the token not exists in db'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '403':
+          description: 'error in token checker'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'the token was invalid or not defined'
+        '200':
+          description: 'successfull data retrieve'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: 'describe if the modification was successfull(true) or failed(false)'
+                  data:
+                    type: array
+                    description: 'the prenotations in which the istructor is the teacher'
+        '202':
+          description: 'successfull but there are no data'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: 'describe if the modification was successfull(true) or failed(false)'
+                  message:
+                    type: string
+                    description: 'message that says there are no prenotation for the istructor_username in the token'
+        
   /segreteria/guideStudenti:
     get:
       description: >-
@@ -64,10 +529,10 @@ paths:
       summary: "Student personal data visualization."
       parameters:
         - in: query
-          name: id
+          name: token
           schema:
             type: string
-          description: The username (foglio rosa) of a student
+            description: This token is available after the login and is used to contain the role and the username of the user 
       responses:
         '200':
           description: 'User found, data correctly retrieved.'
@@ -107,6 +572,16 @@ paths:
                   error:
                     type: string
                     description: 'Cannot load user data'
+        '403':
+          description: 'error in token checker'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'the token was invalid or not defined'
   
   /segreteria/resocontoStudenti:
     get:
@@ -130,6 +605,10 @@ paths:
       summary: Retrieve available istructors
       parameters:
         - in: query
+          name: token
+          schema:
+            type: string
+            description: This token is available after the login and is used to contain the role and the username of the user 
           name: slot
           schema:
             type: string
@@ -149,10 +628,9 @@ paths:
                     _id:
                       type: string
                       description: 'username_istruttore '
-                example:
-                  - _id: "mario.rossi"
-                  - _id: "giuseppe.verdi"
-                  - _id: "mario.rossi-1"
+                    telefono:
+                      type: string
+                      description: 'phone number of the istructors'
         '203':
           description: 'No available istructors for that time slot' 
           content:
@@ -162,7 +640,17 @@ paths:
                 properties:
                   message:
                     type: string
-                    description: 'No istructors available' 
+                    description: 'No istructors available'
+        '400':
+          description: 'time slot error' 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: 'the format of the date and time was not as required'
         '404':
           description: 'Server error'
           content:
@@ -173,7 +661,16 @@ paths:
                   error:
                     type: string
                     description: 'describes the error that took place in the server' 
-                
+        '403':
+          description: 'error in token checker'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'the token was invalid or not defined'
                 
   /prenotazioni/prenotaGuida:
     post:
@@ -182,11 +679,15 @@ paths:
       summary: 'Make new reservation'
       parameters:
         - in: query
-          name: username_studente
+          name: token
           schema:
             type: string
-          required: true
-          description: 'The username of the student that is bookint the slot for a drive'
+            description: This token is available after the login and is used to contain the role and the username of the user 
+          name: slot
+          schema:
+            type: string
+            format: date-time
+            description: This token is available after the login and is used to contain the role and the username of the user 
       requestBody:
         content:
           application/json:
@@ -214,7 +715,7 @@ paths:
                 properties:
                   URI:
                     type: string 
-                    description: 'link to the prenotation that already exsists: /api/v1/Prenotazioni/id'
+                    description: 'URI: link to the prenotation that already exsists: /api/v1/prenotazioni/id'
                   message:
                     type: string
                     description: 'message to display for the user in wich the server reports that the prenotation already exists'
@@ -225,12 +726,14 @@ paths:
               schema:
                 type: object
                 properties:
-                  URI:
+                  sleg:
                     type: string 
-                    description: 'link to the new prenotation: /api/v1/Prenotazioni/id'
+                    description: 'URI: link to the new prenotation: /api/v1/prenotazioni/id'
                   message:
                     type: string
                     description: 'message to display for the user: booking successfully'
+                  prenotazione:
+                    $ref:'#/components/schemas/Prenotazione'
         '404':
           description: 'Server error'
           content:
@@ -240,7 +743,27 @@ paths:
                 properties:
                   error:
                     type: string
-                    description: 'describes the error that took place in the server' 
+                    description: 'describes the error that took place in the server'
+        '400':
+          description: 'time slot error or username stu/istr not found' 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: 'the format of the date and time was not as required or the student/istructor username does not exists'
+        '403':
+          description: 'error in token checker'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'the token was invalid or not defined'
 
 
   /prenotazioni/annullaGuida:
@@ -250,11 +773,15 @@ paths:
       summary: 'Remove a reservation'
       parameters:
         - in: query
+          name: token
+          schema:
+            type: string
+            description: This token is available after the login and is used to contain the role and the username of the user 
           name: _id
           schema:
             type: string
           required: true
-          description: 'contains the id that the user want to remove'
+          description: 'contains the id of the drive that the user want to remove'
       responses:
         '200':
           description: 'reservation removed successfully'
@@ -266,7 +793,7 @@ paths:
                   message:
                     type: string
                     description: 'successfull message for the user'
-        '404':
+        '401':
           description: 'Server error'
           content:
              application/json:
@@ -276,7 +803,17 @@ paths:
                   error:
                     type: string
                     description: 'describes the error that took place in the server'
-
+        '403':
+          description: 'error in token checker'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'the token was invalid or not defined'
+  
   /istruttori/visualizzaImpegni:
     get:
       description: >-
@@ -284,18 +821,19 @@ paths:
       summary: "Istructor prenotation visualization."
       parameters: 
         - in: query
-          name: id
+          name: token
           schema:
             type: string
-          required: true
-          description: "The username (username_istruttore) of an istructor"
+            description: This token is available after the login and is used to contain the role and the username of the user 
       responses:
         '200':
-          description: 'Prenotation found, data correctly retrieved.'
+          description: 'Prenotation found, data correctly retrieved or the data was correctly retrieved and but there are no appointments.'
           content:
             application/json:
               schema:
                 type: array
+                items:
+                  $ref: '#/components/schemas/Prenotazione'
         '400':
           description: 'Server error'
           content:
@@ -306,8 +844,78 @@ paths:
                   error:
                     type: string
                     description: 'Cannot load user prenotation'
+        '403':
+          description: 'error in token checker'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'the token was invalid or not defined'
+                    
+  /segreteria/modificaStudente:
+    put:
+      description: >-
+        Modify student data
+      summary: Modify data of a student
+      requestBody:
+        content:
+          application/json:
+              schema:
+                type: object
+                items:
+                  - foglio_rosa
+                  - nome
+                  - cognome
+                  - data_nascita
+                  - telefono
+                  - email
+                properties:
+                    foglio_rosa:
+                      type: string
+                      description: 'Foglio rosa ID (username of student account)'
+                    nome:
+                      type: string
+                      description: 'First name of student'
+                    cognome:
+                      type: string
+                      description: 'Last name of student'
+                    dataNascita:
+                      type: string
+                      format: date-time
+                      description: 'Date of birth of student'
+                    telefono:
+                      type: string
+                      description: 'Phone number of the student'
+                    email:
+                      type: string
+                      description: 'Email address of the student'
+      responses:
+        '200':
+          description: 'Student correctly modified'
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  - message
+                properties:
+                  message:
+                    type: string
+                    description: 'Operation successfully completed message'
+        '400':
+          description: 'Unexpected error'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'Error message'
 
-          
 components:
   schemas:
   
