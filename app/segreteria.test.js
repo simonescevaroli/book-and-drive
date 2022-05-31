@@ -17,6 +17,6 @@ describe("GET /api/v1/segreteria/resecontoStudente",()=>{
 
 })
 
-describe("GET /api/v1/segreteria/modificaStudente",()=>{
+describe("PUT /api/v1/segreteria/modificaStudente",()=>{
 
 })
