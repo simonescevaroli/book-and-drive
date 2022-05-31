@@ -14,6 +14,6 @@ describe("GET /api/v1/prenotazioni/mieGuide",()=>{
 
 })
 
-describe("GET /api/v1/prenotazioni/modificaPresenza",()=>{
+describe("POST /api/v1/prenotazioni/modificaPresenza",()=>{
 
 })
