@@ -130,8 +130,100 @@ describe("DELETE /api/v1/prenotazioni/annullaGuida",()=>{
 })
 
 describe("GET /api/v1/prenotazioni/mieGuide",()=>{
-
-})
+    beforeAll( async () => { jest.setTimeout(80000);
+            app.locals.db = await mongoose.connect(process.env.DB_URL);
+            await Prenotazione.deleteMany({})
+            await Studente.deleteMany({})
+            await populatesMieGuide();
+            
+    });
+    afterAll(async () => { await mongoose.connection.close(true); });
+    var token1 = jwt.sign({
+        username_studente: "foglio_rosa00",
+        role: "studente"
+     },
+     process.env.SUPER_SECRET, {
+        expiresIn: 86400
+     });
+ 
+  var token2 = jwt.sign({
+        username_studente: "foglio_rosa12",
+        role: "studente"
+     },
+     process.env.SUPER_SECRET, {
+        expiresIn: 86400
+     });
+     var token3 = jwt.sign({
+         username_studente: "foglio_rosa12",
+         role: "studente"
+      },
+      "secret", {
+         expiresIn: 86400
+      });
+      var token4 = jwt.sign({
+         username_studente:"",
+         role: "studente"
+      },
+      process.env.SUPER_SECRET, {
+         expiresIn: 86400
+      });
+      var token5 = jwt.sign({
+          username_studente:"foglio_rosa00",
+          role: "studente"
+       },
+       process.env.SUPER_SECRET, {
+          expiresIn: -1
+       }); 
+ 
+    test('GET /api/v1/prenotazioni/mieGuide with Student specified and correct token',async () => {
+        const res = await request(app).get('/api/v1/prenotazioni/mieGuide?token='+token1)
+        .set('Accept', 'application/json')
+        expect(res.status).toEqual(200);
+        if(res.status==200){
+            var dati = res._body
+            var data=true
+ 
+            if( dati[1].istruttore!="elon.musk1"||dati[1].studente!="Giorgio Rossi"||dati[1].slot!="2022-05-07T18:00:00.000Z")
+                data=false;
+            expect(data).toEqual(true); 
+             
+        }
+    });
+    test('GET /api/v1/studenti/mieGuide?token=token2 should respond json containing an error message because token2 contains an inexisting id in the db', async () => {
+        return request(app).get('/api/v1/prenotazioni/mieGuide?token=' + token2)
+            .expect('Content-Type', /json/).then((res) => {
+                expect(res.status).toEqual(404)
+            });
+    });
+    test('GET /api/v1/studenti/mieGuide?token=token4 should respond json containing an error message because token4 the username_studente field is an empty string', async () => {
+        return request(app).get('/api/v1/prenotazioni/mieGuide?token=' + token4)
+            .expect('Content-Type', /json/).then((res) => {
+                expect(res.status).toEqual(400)
+            });
+    });
+    test('GET /api/v1/studenti/mieGuide?token=token3 should respond json containing an error because the token is not valid due to the wrong encryption key', async () => {
+        return request(app).get('/api/v1/prenotazioni/mieGuide?token=' + token3)
+            .expect('Content-Type', /json/).then((res) => {
+                expect(res.status).toEqual(403)
+            });
+    });
+    test('GET /api/v1/studenti/mieGuide?token=token5 should respond json containing an error because the token is not valid due to the time expiration', async () => {
+     return request(app).get('/api/v1/prenotazioni/mieGuide?token=' + token5)
+         .expect('Content-Type', /json/).then((res) => {
+             expect(res.status).toEqual(403)
+         });
+ });
+    test('GET /api/v1/studenti/mieGuide should respond json containing an error message beacuse no token was sent', async () => {
+        return request(app).get('/api/v1/prenotazioni/mieGuide')
+            .expect('Content-Type', /json/).then((res) => {
+                expect(res.status).toEqual(403)
+            });
+    });
+    setTimeout(function() {
+    }, 3000);
+ })
+ 
+ 
 
 describe("POST /api/v1/prenotazioni/modificaPresenza",()=>{
 })
@@ -230,3 +322,57 @@ async function populatesPrenota(){
     });
     await istruttore.save();
 }
+
+
+async function populatesMieGuide(){
+    let studente = new Studente({
+        _id: "foglio_rosa00",
+        nome: "Giorgio",
+        cognome: "Rossi",
+        dataNascita: new Date("2000-05-07T00:00:00.000Z"),
+        telefono: "3459905727",
+        email: "giorgio.rossi@gmail.com"   
+    });
+    await studente.save();
+ 
+   studente = new Studente({
+        _id : "foglio_rosa01",
+        password : "pass",
+        nome: "alberto",
+        cognome: "gusmeroli",
+        dataNascita: new Date("04-03-2002"),
+        telefono: "3490901508",
+        email: "albegus@gmail.com"    
+    });
+    await studente.save();
+    let prenotazione = new Prenotazione({
+        username_studente: "foglio_rosa00",
+        nominativo_studente: "Giorgio Rossi",
+        username_istruttore:"elon.musk1",
+        slot: new Date("2022-05-07T00:00:00.000Z"),
+        presenza: true
+     });
+    await prenotazione.save();
+ 
+    
+    
+    prenotazione = new Prenotazione({
+        username_studente: "foglio_rosa00",
+        nominativo_studente: "Giorgio Rossi",
+        username_istruttore:"elon.musk1",
+        slot: new Date("2022-05-07T18:00:00.000Z"),
+        presenza: true
+    });
+    await prenotazione.save()
+    prenotazione = new Prenotazione({
+        username_studente: "foglio_rosa00",
+        nominativo_studente: "Giorgio Rossi",
+        username_istruttore:"elon.musk1",
+        slot: new Date("2022-06-07T12:00:00.000Z"),
+        presenza:true
+     });
+ 
+ 
+    await prenotazione.save();
+ 
+    }
