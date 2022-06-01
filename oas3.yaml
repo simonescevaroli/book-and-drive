@@ -147,6 +147,7 @@ paths:
           name: _id
           schema:
             type: string
+          required: true
           description: 'The id of the student whose prenotations you want to see'
       responses:
         '404':
@@ -339,6 +340,7 @@ paths:
           name: token
           schema:
             type: string
+          required: true
           description: 'This token is available after the login and is used to contain the role and the username of the user'
       responses:
         '400':
@@ -399,10 +401,13 @@ paths:
           name: token
           schema:
             type: string
+          required: true
           description: 'This token is available after the login and is used to contain the role and the username of the user'
+        - in: query  
           name: id_guida
           schema:
             type: string
+          required: true
           description: 'the id of the drive wich the student has attended or not'
       responses:
         '404':
@@ -459,7 +464,8 @@ paths:
           name: token
           schema:
             type: string
-            description: 'This token is available after the login and is used to contain the role and the username of the user' 
+          required: true
+          description: 'This token is available after the login and is used to contain the role and the username of the user' 
       responses:
         '404':
           description: 'username in the token not exists in db'
@@ -532,7 +538,8 @@ paths:
           name: token
           schema:
             type: string
-            description: This token is available after the login and is used to contain the role and the username of the user 
+          required: true
+          description: This token is available after the login and is used to contain the role and the username of the user 
       responses:
         '200':
           description: 'User found, data correctly retrieved.'
@@ -608,7 +615,9 @@ paths:
           name: token
           schema:
             type: string
-            description: This token is available after the login and is used to contain the role and the username of the user 
+          required: true
+          description: This token is available after the login and is used to contain the role and the username of the user 
+        - in: query
           name: slot
           schema:
             type: string
@@ -682,12 +691,9 @@ paths:
           name: token
           schema:
             type: string
-            description: This token is available after the login and is used to contain the role and the username of the user 
-          name: slot
-          schema:
-            type: string
-            format: date-time
-            description: This token is available after the login and is used to contain the role and the username of the user 
+          required: true
+          description: This token is available after the login and is used to contain the role and the username of the user 
+         
       requestBody:
         content:
           application/json:
@@ -776,7 +782,9 @@ paths:
           name: token
           schema:
             type: string
-            description: This token is available after the login and is used to contain the role and the username of the user 
+          required: true
+          description: This token is available after the login and is used to contain the role and the username of the user 
+        - in: query  
           name: _id
           schema:
             type: string
@@ -824,7 +832,8 @@ paths:
           name: token
           schema:
             type: string
-            description: This token is available after the login and is used to contain the role and the username of the user 
+          required: true
+          description: This token is available after the login and is used to contain the role and the username of the user 
       responses:
         '200':
           description: 'Prenotation found, data correctly retrieved or the data was correctly retrieved and but there are no appointments.'
@@ -925,6 +934,7 @@ paths:
           name: token
           schema:
             type: string
+          required: true
           description: 'This token is available after the login and is used to contain the role and the username of the user'
       responses:
         '400':
@@ -945,7 +955,7 @@ paths:
                 properties:
                   message:
                     type: string
-                    description: 'contains the message that will be desplayed to the user. It describes what the use can do'
+                    description: 'contains the message that will be desplayed to the user based on its role. It describes what the use can do'
         '403':
           description: 'error in token checker'
           content:
