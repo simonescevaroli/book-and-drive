@@ -4,9 +4,6 @@ const Studente = require('./models/studente.js');
 const Prenotazione = require('./models/prenotazione.js');
 const Istruttore = require('./models/istruttore.js');
 
-describe("GET /api/v1/segreteria/guideStudenti",()=>{
-
-})
 
 describe("GET /api/v1/segreteria/guideStudente",()=>{
     let connection;
@@ -22,31 +19,24 @@ describe("GET /api/v1/segreteria/guideStudente",()=>{
     });
   
     afterAll( async () => {
-      await mongoose.connection.close(true);
+      await mongoose.connection.close(false);
     });
-
-    // create a valid token
-    var token = jwt.sign(
-      {username: 'admin', password: 'admin'},
-      process.env.SUPER_SECRET,
-      {expiresIn: 86400}
-    );
   
     test('GET /api/v1/segreteria/guideStudente senza specificare studente', () => {
         return request(app)
-        .get('/api/v1/segreteria/guideStudente?token=' + token + '&_id=')
+        .get('/api/v1/segreteria/guideStudente?_id=')
         .expect(400, { error: "L'id dello studente non è stato specificato" });
     });
     
     test('GET /api/v1/segreteria/guideStudente studente inesistente', () => {
       return request(app)
-        .get('/api/v1/segreteria/guideStudente?token=' + token + '&_id=fyvygv')
+        .get('/api/v1/segreteria/guideStudente?_id=fyvygv')
         .expect(404, { error: 'Questo studente non esiste, controlla se lo hai inserito correttamente!' });
     });
     
     test('GET /api/v1/segreteria/guideStudente studente esistente e con prenotazioni, successo', () => {
         return request(app)
-          .get('/api/v1/segreteria/guideStudente?token=' + token + '&_id=foglio_rosa02')
+          .get('/api/v1/segreteria/guideStudente?_id=foglio_rosa02')
           .expect(200)
             .then( (res) => {
                 expect(res.body[0]).toEqual({
@@ -68,25 +58,56 @@ describe("GET /api/v1/segreteria/guideStudente",()=>{
 
     test('GET /api/v1/segreteria/guideStudente studente senza guide', () => {
         return request(app)
-          .get('/api/v1/segreteria/guideStudente?token=' + token + '&_id=foglio_rosa03')
+          .get('/api/v1/segreteria/guideStudente?_id=foglio_rosa03')
           .expect(202, { message: 'Questo studente al momento non ha guide prenotate o fatte' });
     });
 
 })
 
+describe("GET /api/v1/segreteria/resocontoStudente",()=>{
+  beforeAll( async () => {
+    jest.setTimeout(8000);
+    jest.unmock('mongoose');
+    connection = await  mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true});
+    await Prenotazione.deleteMany({})
+    await Studente.deleteMany({})
+    await Istruttore.deleteMany({})
+    await populatesAnnulla();
+  });
 
-describe("GET /api/v1/segreteria/resecontoStudenti",()=>{
+  afterAll( async () => {
+    await mongoose.connection.close(false);
+  });
 
+  test('GET /api/v1/segreteria/resocontoStudente con studente esistente', () => {
+    return request(app)
+      .get('/api/v1/segreteria/resocontoStudente?id=foglio_rosa02')
+      .expect(200)
+      .then( (res) => {
+        expect(res.body).toEqual({
+          self: '/api/v1/studenti/foglio_rosa02',
+          foglio_rosa: "foglio_rosa02",
+          nome: "Giulio",
+          cognome: "Rossi",
+          dataNascita: "2001-10-09T00:00:00.000Z",
+          telefono: "3459905727",
+          email: "giulio.rossi@gmail.com"
+        });
+      })
+  });
+
+  test('GET /api/v1/segreteria/resocontoStudente con studente non specificato', () => {
+    return request(app)
+      .get('/api/v1/segreteria/resocontoStudente?id=')
+      .expect(400)
+  });
+
+  test('GET /api/v1/segreteria/resocontoStudente con studente inesistente', () => {
+    return request(app)
+      .get('/api/v1/segreteria/resocontoStudente?id=trottola')
+      .expect(400)
+  });
 })
-
-describe("GET /api/v1/segreteria/resecontoStudente",()=>{
-
-})
-
-describe("PUT /api/v1/segreteria/modificaStudente",()=>{
-
-})
-
 
 async function populatesAnnulla(){
 
