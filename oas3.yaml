@@ -32,7 +32,7 @@ paths:
                   type: string
                   description: 'The passsword that the student used to sign in the application'
       responses:
-        '400':
+        '401':
           description: 'The student username was not found or the password was wrong'
           content:
              application/json:
@@ -75,7 +75,7 @@ paths:
                   type: string
                   description: 'The passsword that the secretariat'
       responses:
-        '400':
+        '401':
           description: 'The secretariat username was not found or the password was wrong'
           content:
              application/json:
@@ -117,7 +117,7 @@ paths:
                   type: string
                   description: 'The passsword that the istructor used to sign in the application'
       responses:
-        '400':
+        '401':
           description: 'The istructor username was not found or the password was wrong'
           content:
              application/json:
