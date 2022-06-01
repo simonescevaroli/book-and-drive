@@ -605,6 +605,38 @@ paths:
                 items:
                   $ref: '#/components/schemas/Studente'
                   
+  /segreteria/resocontoStudente:
+    get:
+      description: >-
+        Shows the personal data of a single student.
+      summary: "Single student personal data visualization."
+      parameters:
+        - in: query
+          name: _id
+          schema:
+            type: string
+          required: true
+          description: 'The id of the student to see'
+      responses:
+        '200':
+          description: 'The data of the student have been retrieved.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Studente'
+        '400':
+          description: 'error in retrieving data' 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: 'Failed in retrieving data'
+                    
   /istruttori/verificaDisponibilita:
     get:
       description: >-
