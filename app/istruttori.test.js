@@ -70,14 +70,6 @@ describe("GET /api/v1/istruttori/visualizzaImpegni", ()=>{
     });
 });
 
-describe("GET /api/v1/istruttori/verificaDiponibilita", ()=>{
-
-});
-
-describe("GET /api/v1/istruttori/prenotazioniIstruttore", ()=>{
-
-});
-
 async function populatesImpegni(){
 
     var istruttore = new Istruttore({
