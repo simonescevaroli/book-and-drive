@@ -915,7 +915,47 @@ paths:
                   error:
                     type: string
                     description: 'Error message'
-
+  /help:
+    get:
+      description: >-
+        Gets the description of the funcitonalities that the user can use.
+      summary: Get description of functionalities
+      parameters:
+        - in: query
+          name: token
+          schema:
+            type: string
+          description: 'This token is available after the login and is used to contain the role and the username of the user'
+      responses:
+        '400':
+          description: 'the role of the user was not find or is inconsistent with the types of user available in the system'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '200':
+          description: 'The user has a valid role in the token'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: 'contains the message that will be desplayed to the user. It describes what the use can do'
+        '403':
+          description: 'error in token checker'
+          content:
+             application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 'the token was invalid or not defined'
 components:
   schemas:
   
