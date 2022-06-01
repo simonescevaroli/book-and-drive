@@ -6,9 +6,8 @@ describe('POST /api/v1/autenticazione_segreteria',()=>{
     
     let fSpy; 
     beforeAll(() => {
-        jest.setTimeout(16000);
-        fSpy = jest.spyOn(segreteria, 'findOne').mockImplementation((user) => {
-        if (user._id == "admin") { 
+       fSpy = jest.spyOn(segreteria, 'findOne').mockImplementation((user) => {
+        if (user.username == "admin") { 
             return {
               _id: '62962cf7a9ae1c5bed1c4189',
               username: 'admin',
@@ -40,15 +39,14 @@ describe('POST /api/v1/autenticazione_segreteria',()=>{
     });
 
     test('POST /api/v1/autenticazione_segreteria con password corretta', () => {
-        request(app)
-        .post('/api/v1/autenticazione_segeteria')
+        return request(app)
+        .post('/api/v1/autenticazione_segreteria')
         .send({ username_segreteria: 'admin', password: 'admin'})
         .then((ret)=>{
             expect(ret.status).toBe(200)
             expect(ret.body.success).toBe(true)
             expect(ret.body.message).toBe('Enjoy your token!')
             expect(ret.body.role).toBe('segreteria')
-            return ret;
             })
         
     });

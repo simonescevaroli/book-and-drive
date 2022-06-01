@@ -10,7 +10,7 @@ describe('POST /api/v1/autenticazione_studenti',()=>{
         studentSpy = jest.spyOn(Studente, 'findOne').mockImplementation((user_stud) => {
         if (user_stud._id == "foglio_rosa00") { 
             return {
-                id: "foglio_rosa00",
+                _id: "foglio_rosa00",
                 nome: "Giorgio",
                 cognome: "Rossi",
                 dataNascita: new Date("2000-05-07T00:00:00.000Z"),
