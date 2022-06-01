@@ -9,7 +9,7 @@ router.post('', async function(req, res) {
 	// find the user
 	let istruttore = await Istruttore.findOne({
 		_id: req.body.username_istruttore
-	}).exec();
+	})
 	
 	// user not found
 	if (!istruttore) {
