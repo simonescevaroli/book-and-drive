@@ -32,13 +32,13 @@ router.get('/guideStudente', async (req,res)=>{
     }
     // guardo se lo studente inserito esiste nel db
     let profilo = null
-    profilo = await Studente.findById(query._id).exec();
+    profilo = await Studente.findById(query._id);
     if(profilo == null){
         res.status(404).json({error:"Questo studente non esiste, controlla se lo hai inserito correttamente!"});
         return;
     }
     // cerco le prenotazioni di un particolare studente
-    let prenotazioni = await Prenotazione.find({username_studente: query._id}).exec();
+    let prenotazioni = await Prenotazione.find({username_studente: query._id});
     // se non ha prenotazioni, ritono una stringa che lo specifica
     if(prenotazioni.length==0){
         res.status(202).json({message:"Questo studente al momento non ha guide prenotate o fatte"});
