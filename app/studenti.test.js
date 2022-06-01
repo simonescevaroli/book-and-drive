@@ -63,11 +63,9 @@ describe("GET /api/v1/studenti/me", ()=>{
          }); 
     
         test('GET /api/v1/studenti/me?token=token1 should return code 200', async () => {
-            console.log("token1==========="+token1);
             return request(app).get('/api/v1/studenti/me?token=' + token1)
                 .expect('Content-Type', /json/).then((res) => {
                     expect(res.status).toEqual(200)
-                    console.log("res=="+res);
                     var dati=(JSON.parse(res.text));
                     
                     var data=true

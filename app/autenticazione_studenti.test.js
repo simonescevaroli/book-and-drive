@@ -6,7 +6,8 @@ describe('POST /api/v1/autenticazione_studenti',()=>{
 
     let studentSpy; 
     beforeAll(() => {
-       studentSpy = jest.spyOn(Studente, 'findOne').mockImplementation((user_stud) => {
+        jest.setTimeout(16000);
+        studentSpy = jest.spyOn(Studente, 'findOne').mockImplementation((user_stud) => {
         if (user_stud._id == "foglio_rosa00") { 
             return {
                 id: "foglio_rosa00",
@@ -56,16 +57,3 @@ describe('POST /api/v1/autenticazione_studenti',()=>{
         
     });
 })
-
-async function populate(){
-    let studente = new Studente({
-        _id: "foglio_rosa05",
-        nome: "Giorgio",
-        cognome: "Rossi",
-        password: 'pass',
-        dataNascita: new Date("2000-05-07T00:00:00.000Z"),
-        telefono: "3459905727",
-        email: "giorgio.rossi@gmail.com"   
-    });
-    await studente.save();
-}

@@ -6,6 +6,7 @@ describe('POST /api/v1/autenticazione_istruttori',()=>{
 
     let fSpy; 
     beforeAll(() => {
+        jest.setTimeout(16000);
        fSpy = jest.spyOn(Istruttore, 'findOne').mockImplementation((user_istr) => {
         if (user_istr._id == "jeff.bezos") { 
             return {

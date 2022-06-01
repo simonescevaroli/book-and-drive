@@ -15,7 +15,6 @@ describe("GET /api/v1/segreteria/guideStudente",()=>{
       jest.setTimeout(8000);
       jest.unmock('mongoose');
       connection = await  mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true});
-      console.log('Database connected!');
       await Prenotazione.deleteMany({})
       await Studente.deleteMany({})
       await Istruttore.deleteMany({})
@@ -24,7 +23,6 @@ describe("GET /api/v1/segreteria/guideStudente",()=>{
   
     afterAll( async () => {
       await mongoose.connection.close(true);
-      console.log("Database connection closed");
     });
 
     // create a valid token

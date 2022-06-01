@@ -16,7 +16,6 @@ describe("POST /api/v1/prenotazioni/prenotaGuida",()=>{
     });
     afterAll( async () => {
         await mongoose.connection.close(false);
-        console.log("Database connection closed");
     });
     var token1 = jwt.sign({
           username_studente: "foglio_rosa01",
@@ -103,7 +102,6 @@ describe("DELETE /api/v1/prenotazioni/annullaGuida",()=>{
     });
     afterAll( async () => {
         await mongoose.connection.close(false);
-        console.log("Database connection closed");
     });
 
     // create token
@@ -138,52 +136,6 @@ describe("GET /api/v1/prenotazioni/mieGuide",()=>{
 
 describe("POST /api/v1/prenotazioni/modificaPresenza",()=>{
 })
-
-
-/*async function populatesAnnullaGuida(){
-
-    let studente = new Studente({
-        _id: "foglio_rosa00",
-        nome: "Giorgio",
-        cognome: "Rossi",
-        password: 'pass',
-        dataNascita: new Date("2000-05-07T00:00:00.000Z"),
-        telefono: "3459905727",
-        email: "giorgio.rossi@gmail.com"   
-    });
-    await studente.save();
-
-   studente = new Studente({
-        _id : "foglio_rosa01",
-        password : "pass",
-        nome: "mario",
-        cognome: "bianchi",
-        dataNascita: new Date("04-03-2002"),
-        telefono: "3490901508",
-        email: "mario@gmail.com"    
-    });
-    await studente.save();
-    
-    prenotazione = new Prenotazione({
-        _id: '62962cf7a9ae1c5bed1c4185',
-        username_studente: "foglio_rosa00",
-        nominativo_studente: "Giorgio Rossi",
-        username_istruttore:"elon.musk",
-        slot: new Date("2022-05-07T18:00:00.000Z"),
-        presenza: true
-    });
-    await prenotazione.save();
-
-    prenotazione = new Prenotazione({
-        _id: '62962cf7a9ae1c5bed1c4188',
-        username_studente: "foglio_rosa00",
-        nominativo_studente: "Giorgio Rossi",
-        username_istruttore:"elon.musk",
-        slot: new Date("2022-06-07T12:00:00.000Z"),
-        presenza:true
-     });
-    await prenotazione.save();
-}*/
 
 
 async function populatesAnnullaGuida(){
