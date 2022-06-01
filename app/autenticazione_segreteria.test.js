@@ -6,7 +6,8 @@ describe('POST /api/v1/autenticazione_segreteria',()=>{
     
     let fSpy; 
     beforeAll(() => {
-       fSpy = jest.spyOn(segreteria, 'findOne').mockImplementation((user) => {
+        jest.setTimeout(16000);
+        fSpy = jest.spyOn(segreteria, 'findOne').mockImplementation((user) => {
         if (user.username == "admin") { 
             return {
               _id: '62962cf7a9ae1c5bed1c4189',

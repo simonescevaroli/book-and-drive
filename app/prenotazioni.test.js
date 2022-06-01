@@ -90,9 +90,8 @@ describe("POST /api/v1/prenotazioni/prenotaGuida",()=>{
 
 describe("DELETE /api/v1/prenotazioni/annullaGuida",()=>{
     
-    jest.setTimeout(20000)
-    beforeAll( async () => { jest.setTimeout(8000);
-        jest.setTimeout(8000);
+    beforeAll( async () => {
+        jest.setTimeout(16000);
         jest.unmock('mongoose');
         app.locals.db = await mongoose.connect(process.env.DB_URL);
         await Prenotazione.deleteMany({})

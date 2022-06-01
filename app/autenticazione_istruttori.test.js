@@ -40,7 +40,7 @@ describe('POST /api/v1/autenticazione_istruttori',()=>{
     });
 
     test('POST /api/v1/autenticazione_istruttori con password corretta', () => {
-        request(app)
+        return request(app)
         .post('/api/v1/autenticazione_istruttori')
         .send({ username_istruttore: 'jeff.bezos', password: '098'})
         .then((ret)=>{
@@ -49,7 +49,6 @@ describe('POST /api/v1/autenticazione_istruttori',()=>{
             expect(ret.body.message).toBe('Enjoy your token!')
             expect(ret.body.username_istruttore).toBe('jeff.bezos')
             expect(ret.body.role).toBe('istruttore')
-            return ret;
             })
     });
 

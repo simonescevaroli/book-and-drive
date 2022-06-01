@@ -11,6 +11,7 @@ describe('POST /api/v1/autenticazione_studenti',()=>{
         if (user_stud._id == "foglio_rosa00") { 
             return {
                 _id: "foglio_rosa00",
+                password: "pass",
                 nome: "Giorgio",
                 cognome: "Rossi",
                 dataNascita: new Date("2000-05-07T00:00:00.000Z"),
@@ -43,7 +44,7 @@ describe('POST /api/v1/autenticazione_studenti',()=>{
     });
 
     test('POST /api/v1/autenticazione_studenti con password corretta', () => {
-        request(app)
+        return request(app)
         .post('/api/v1/autenticazione_studenti')
         .send({ username_studente: 'foglio_rosa00', password: 'pass'})
         .then((ret)=>{
@@ -52,7 +53,6 @@ describe('POST /api/v1/autenticazione_studenti',()=>{
             expect(ret.body.message).toBe('Enjoy your token!')
             expect(ret.body.username_studente).toBe('foglio_rosa00')
             expect(ret.body.role).toBe('studente')
-            return ret;
             })
         
     });
