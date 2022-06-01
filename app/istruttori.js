@@ -42,9 +42,6 @@ router.get('/visualizzaImpegni', async (req,res)=>{
 
 router.get('/verificaDiponibilita',async (req,res)=>{
     //verifica disponibilità degli istruttori
-    console.log("verifica disponibilità");
-    console.log("slot:",req.query.slot)
-    
     if( req.query.slot[10]!=="T" || req.query.slot[23]!=="Z"){
         res.status(400).json({error: "slot temporale non fornito in formato ISO_8601"});
         return;
@@ -54,21 +51,17 @@ router.get('/verificaDiponibilita',async (req,res)=>{
         res.status(400).json({error: "data o ora non fornite"});
         return;
     }
-    console.log(slot);
     //recupero gli id di tutti gli istruttori nel db
     var all_istructors= await Istruttore.find({},{_id:1}).exec();
     for(let i=0; i < all_istructors.length; i++){
         all_istructors[i]=all_istructors[i]._id.toString();
     }
-    console.log(all_istructors);
 
     //recupero gli id di tutti gli istruttori già prenotati per quella data e ora
     const booked_istructors= await Prenotazione.find({slot: slot},{username_istruttore:1 }).exec();
-    console.log(booked_istructors);
     for(let i=0; i < booked_istructors.length; i++){
         booked_istructors[i]=booked_istructors[i].username_istruttore;
     }
-    console.log("istruttori già prenotati "+booked_istructors);
 
     //salvo gli id degli istruttori non occupati per quello slot temporale
     var available_istructors_id = [];
@@ -77,11 +70,9 @@ router.get('/verificaDiponibilita',async (req,res)=>{
             available_istructors_id.push(all_istructors[i]);
         }
     };
-    console.log("istruttori disponibili "+ available_istructors_id);
     //recupero dati degli istruttori disponibili e li invio in risposta al client oppure invio l errore riscontrato
     Istruttore.find({_id: {$in: available_istructors_id}},{_id:1}).exec().then((data)=>{    
         if(!data.length){
-            console.log("no istruttori");
             res.status(203).json({
                 message:"non ci sono istruttori disponibili per quello slot"
             });
@@ -93,8 +84,7 @@ router.get('/verificaDiponibilita',async (req,res)=>{
             });
         }
     })
-    .catch((err)=>{ 
-        console.log("errore:"+err);
+    .catch((err)=>{
         res.status(404).json({error: ''+err});
     });
 

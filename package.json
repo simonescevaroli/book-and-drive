@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --setupFiles dotenv/config",
+    "test": "jest --setupFiles dotenv/config --runInBand",
     "start": "node index.js",
     "start_local": "echo use : $ npm run dev",
     "dev": "node -r dotenv/config index.js"
@@ -28,6 +28,7 @@
     "mongoose": "^6.3.3"
   },
   "devDependencies": {
+    "jest": "^28.1.0",
     "supertest": "^6.2.3"
   }
 }

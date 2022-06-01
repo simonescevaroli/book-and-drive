@@ -22,12 +22,10 @@ router.post('/prenotaGuida',async (req,res)=>{
         res.status(400).json({error: "data o ora non fornite"});
         return;
     }
-    console.log(id_studente);
 
     //controllo se studente esiste
     //constrollo se istruttore esiste
     var studente= await Studente.findOne({_id:id_studente},{nome:1,cognome:1}).exec();
-    console.log(studente);
     if(!studente){
         res.status(400).json({error: "username studente non esiste"});
         return;
@@ -35,19 +33,16 @@ router.post('/prenotaGuida',async (req,res)=>{
 
     var username_istruttore= req.body.username_istruttore;
     var istruttore= await Istruttore.findOne({_id:username_istruttore}).exec();
-    console.log(istruttore);
     if(!istruttore){
         res.status(400).json({error: "username istruttore non esiste"});
         return;
     }
 
     var nominativo_studente=studente.nome+" "+studente.cognome;
-    console.log("nominativo studente:"+nominativo_studente);
     
     //cotrollo se la prenotazione è già stata effettuata
     var check=await Prenotazione.find({slot:slot,username_istruttore:req.body.username_istruttore, username_studente:id_studente}).exec();
     if(check.length>0){
-        console.log("prenotazione esiste già")
         res.status(208).json({
             message:"prenotazione esiste già",
             self:"/api/v1/Prenotazioni/"+check[0]._id.toString()
@@ -62,7 +57,6 @@ router.post('/prenotaGuida',async (req,res)=>{
     });
      prenotazione.save()
     .then((prenotazione)=>{
-        console.log("prenotazione effettuata");
         res.status(201).json({
             
             message: "Guida prenotata con successo!",
@@ -70,8 +64,7 @@ router.post('/prenotaGuida',async (req,res)=>{
             prenotazione: prenotazione
         });
     })
-    .catch((err)=>{ 
-        console.log("errore:"+err);
+    .catch((err)=>{
         res.status(404).json({error: ''+err});
     });
 
@@ -79,8 +72,7 @@ router.post('/prenotaGuida',async (req,res)=>{
 
 router.delete('/annullaGuida', async (req,res)=>{
     //annulla una prenotazione
-    console.log("annulla guida");
-    var prenotazione = await Prenotazione.findOne({_id: req.query._id}).exec()
+    var prenotazione = await Prenotazione.findOne({_id: req.query._id})
     if(prenotazione.username_studente!=req.loggedUser.username_studente){
         res.status(401).json({
             error: "non puoi cancellare una guida non tua"
@@ -92,8 +84,6 @@ router.delete('/annullaGuida', async (req,res)=>{
         res.status(200).json({message: "guida cancellata con successo"});
     })
     .catch((err)=>{
-        
-        console.log("errore")
         res.status(500).json({
             error: ''+err})
     })

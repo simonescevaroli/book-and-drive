@@ -9,7 +9,7 @@ router.post('', async function(req, res) {
 	// find the user
 	let segreteria = await Segreteria.findOne({
 		username: req.body.username_segreteria
-	}).exec();
+	});
 	
 	// user not found
 	if (!segreteria) {
