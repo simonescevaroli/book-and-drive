@@ -1,6 +1,6 @@
 function loadPrenotazioni(){
   console.log("Caricamento prenotazioni...")
-  fetch("http://localhost:8080/api/v1/istruttori/prenotazioniIstruttore?token="+getCookie("token"),{
+  fetch("../api/v1/istruttori/prenotazioniIstruttore?token="+getCookie("token"),{
 
       method:"GET",
       headers: {
@@ -58,7 +58,7 @@ function loadPrenotazioni(){
                   console.log("Deleting prenotazione ", id_prenot)
                 }
                 // fetch operation
-                fetch("http://localhost:8080/api/v1/prenotazioni/modificaPresenza?token="+getCookie("token")+"&id_guida=" + id_prenot,{
+                fetch("../api/v1/prenotazioni/modificaPresenza?token="+getCookie("token")+"&id_guida=" + id_prenot,{
                   method:"POST",
                   headers: {
                       'Content-Type': 'application/json',

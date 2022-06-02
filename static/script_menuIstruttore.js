@@ -23,7 +23,7 @@ function get_page_modDisponibilita(){
     alert("funzionalità non ancora implementata")
 }
 function get_help_istruttore(){
-    fetch("http://localhost:8080/api/v1/help?token="+getCookie("token"),{
+    fetch("../api/v1/help?token="+getCookie("token"),{
         method:"GET",
         headers: {
             'Content-Type': 'application/json',

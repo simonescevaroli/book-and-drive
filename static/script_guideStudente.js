@@ -1,5 +1,5 @@
 function visualizzaStudenti(){   
-    fetch("http://localhost:8080/api/v1/segreteria/resocontoStudenti",{
+    fetch("../api/v1/segreteria/resocontoStudenti",{
         method:"GET",
         headers: {
             'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ visualizzaStudenti();
 function visionaGuide(){
     var form = document.getElementById("idform").elements;
     var id = form["_id"].value;
-    fetch("http://localhost:8080/api/v1/segreteria/guideStudente?_id="+id,{
+    fetch("../api/v1/segreteria/guideStudente?_id="+id,{
         method:"GET",
         headers: {
             'Content-Type': 'application/json',
