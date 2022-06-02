@@ -17,7 +17,7 @@ function getCookie(cname) {
 
 function visualizzaImpegni()
 {   
-    fetch("../api/v1/istruttori/visualizzaImpegni?token="+getCookie("token"),{
+    fetch("/../api/v1/istruttori/visualizzaImpegni?token="+getCookie("token"),{
         method:"GET",
         headers: {
             'Content-Type': 'application/json',

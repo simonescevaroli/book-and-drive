@@ -6,7 +6,7 @@ function getStudentID(){
     var id_studente = form["id_studente"].value
     console.log("ID STUD:", id_studente)
 
-    fetch("../api/v1/segreteria/resocontoStudente?id="+id_studente,{
+    fetch("/../api/v1/segreteria/resocontoStudente?id="+id_studente,{
         method:"GET",
         headers: {
             'Content-Type': 'application/json',
@@ -169,7 +169,7 @@ function editStudent(){
     console.log("Studente aggiornato:", out)
 
     // fetch operation
-    fetch("../api/v1/segreteria/modificaStudente",{
+    fetch("/../api/v1/segreteria/modificaStudente",{
         method:"PUT",
         headers: {
             'Content-Type': 'application/json',

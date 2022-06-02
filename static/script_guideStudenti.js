@@ -1,6 +1,6 @@
 function visualizzaGuide()
 {   
-    fetch("../api/v1/segreteria/guideStudenti",{
+    fetch("/../api/v1/segreteria/guideStudenti",{
         method:"GET",
         headers: {
             'Content-Type': 'application/json',

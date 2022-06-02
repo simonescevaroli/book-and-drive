@@ -29,7 +29,7 @@ function get_page_mieiDati(){
     window.location="mieiDati.html"
 }
 function get_help_studente(){
-    fetch("../api/v1/help?token="+getCookie("token"),{
+    fetch("/../api/v1/help?token="+getCookie("token"),{
         method:"GET",
         headers: {
             'Content-Type': 'application/json',

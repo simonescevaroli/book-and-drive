@@ -1,5 +1,5 @@
 function listStudents(){
-    fetch("../api/v1/segreteria/resocontoStudenti",{
+    fetch("/../api/v1/segreteria/resocontoStudenti",{
         method:"GET",
         headers: {
             'Content-Type': 'application/json',

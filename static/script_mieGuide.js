@@ -16,7 +16,7 @@ function getCookie(cname) {
 
 function mieGuide()
 {   
-    fetch("../api/v1/prenotazioni/mieGuide?token="+getCookie("token"),{
+    fetch("/../api/v1/prenotazioni/mieGuide?token="+getCookie("token"),{
         method:"GET",
         headers: {
             'Content-Type': 'application/json',

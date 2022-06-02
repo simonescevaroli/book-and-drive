@@ -4,7 +4,7 @@ function login_studente(){
     var username = document.getElementById("username").value;
     var password = document.getElementById("password").value;
    
-    fetch('../api/v1/autenticazione_studenti', {
+    fetch('/../api/v1/autenticazione_studenti', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify( { username_studente: username, password: password } ),
@@ -32,7 +32,7 @@ function login_istruttore(){
     var username = document.getElementById("username").value;
     var password = document.getElementById("password").value;
    
-    fetch('../api/v1/autenticazione_istruttori', {
+    fetch('/../api/v1/autenticazione_istruttori', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify( { username_istruttore: username, password: password } ),
@@ -60,7 +60,7 @@ function login_segreteria(){
     var username = document.getElementById("username").value;
     var password = document.getElementById("password").value;
    
-    fetch('../api/v1/autenticazione_segreteria', {
+    fetch('/../api/v1/autenticazione_segreteria', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify( { username_segreteria: username, password: password } ),

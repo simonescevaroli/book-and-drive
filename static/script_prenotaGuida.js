@@ -21,7 +21,7 @@ function available_istructors_request()
     var ora = form["ora"].value;
     var stringa_data_ora= data+"T"+ora+":00.000Z";
     console.log(stringa_data_ora);
-    fetch("../api/v1/istruttori/verificaDiponibilita?token="+getCookie("token")+"&slot="+stringa_data_ora,{
+    fetch("/../api/v1/istruttori/verificaDiponibilita?token="+getCookie("token")+"&slot="+stringa_data_ora,{
         method:"GET",
         headers: {
             'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ function effettua_prenotazione(){
 
 function invia_dati_per_prenotazione(slot,username_istruttore){
     console.log("username istruttore:",username_istruttore)
-    fetch("../api/v1/prenotazioni/prenotaGuida?token="+getCookie("token"),{
+    fetch("/../api/v1/prenotazioni/prenotaGuida?token="+getCookie("token"),{
         method:"POST",
         headers: {
             'Content-Type': 'application/json',
