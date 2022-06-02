@@ -49,7 +49,7 @@ describe("POST /api/v1/prenotazioni/prenotaGuida",()=>{
 
         test('POST /api/v1/prenotazioni/prenotaGuida?token=token1 should return code 400 for error in date', async () => {
             return request(app).post('/api/v1/prenotazioni/prenotaGuida?token=' + token1)
-            //oraro non nel formato corretto
+            //orario non nel formato corretto
             .send({slot: "123",
                 username_istruttore: "elon.musk"})
             .expect('Content-Type', /json/).then((res) => {
@@ -137,7 +137,9 @@ describe("GET /api/v1/prenotazioni/mieGuide",()=>{
             await populatesMieGuide();
             
     });
-    afterAll(async () => { await mongoose.connection.close(true); });
+    afterAll(async () => {
+        await mongoose.connection.close(false);
+    });
     var token1 = jwt.sign({
         username_studente: "foglio_rosa00",
         role: "studente"
@@ -226,6 +228,69 @@ describe("GET /api/v1/prenotazioni/mieGuide",()=>{
  
 
 describe("POST /api/v1/prenotazioni/modificaPresenza",()=>{
+    beforeAll( async () => {
+        jest.setTimeout(80000);
+        app.locals.db = await mongoose.connect(process.env.DB_URL);
+        await Prenotazione.deleteMany({})
+        await Studente.deleteMany({})
+        await Istruttore.deleteMany({})
+        await populatesModificaPresenza();
+        
+    });
+
+    afterAll(async () => {
+        await mongoose.connection.close(false);
+    });
+
+    var token1 = jwt.sign({
+        username_istruttore: "elon.musk",
+        role: "istruttore"
+    },
+    process.env.SUPER_SECRET, {
+        expiresIn: 86400
+    });
+
+    var token2 = jwt.sign({
+        role: "istruttore"
+    },
+    process.env.SUPER_SECRET, {
+        expiresIn: 86400
+    });
+
+    test('POST /api/v1/prenotazioni/modificaPresenza istruttore valido e prenotazione esistente',async () => {
+        return request(app).post('/api/v1/prenotazioni/modificaPresenza?token=' + token1+"&id_guida=62962cf7a9ae1c5bed1c4700")
+        .expect('Content-Type', /json/).then((res) => {
+            expect(res.status).toEqual(200)
+            var dati=(JSON.parse(res.text));
+
+            var data=true
+            if(dati.message != "modifica riuscita"||dati.success==false)
+                data=false;
+            expect(data).toEqual(true); 
+        });
+    });
+
+    test('POST /api/v1/prenotazioni/modificaPresenza istruttore valido e prenotazione inesistente',async () => {
+        return request(app).post('/api/v1/prenotazioni/modificaPresenza?token=' + token1+"&id_guida=62962cf7a9ae1c5bed1c4710")
+        .expect('Content-Type', /json/).then((res) => {
+            expect(res.status).toEqual(404)
+        });
+    });
+
+    test('POST /api/v1/prenotazioni/modificaPresenza istruttore valido e prenotazione esistente ma modifica una guida non sua',async () => {
+        return request(app).post('/api/v1/prenotazioni/modificaPresenza?token=' + token1+"&id_guida=62962cf7a9ae1c5bed1c4702")
+        .expect('Content-Type', /json/).then((res) => {
+            expect(res.status).toEqual(401)
+        });
+    });
+
+    test('POST /api/v1/prenotazioni/modificaPresenza istruttore insesistente guida valida',async () => {
+        return request(app).post('/api/v1/prenotazioni/modificaPresenza?token=' + token2+"&id_guida=62962cf7a9ae1c5bed1c4700")
+        .expect('Content-Type', /json/).then((res) => {
+            expect(res.status).toEqual(404)
+        });
+    });
+
 })
 
 
@@ -251,17 +316,6 @@ async function populatesAnnullaGuida(){
         email: "mario@gmail.com"    
     });
     await studente.save();
-
-
-    let prenotazione = new Prenotazione({
-        username_studente: "foglio_rosa00",
-        nominativo_studente: "Giorgio Rossi",
-        username_istruttore:"elon.musk",
-        slot: new Date("2022-05-07T00:00:00.000Z"),
-        presenza: true
-     });
-    await prenotazione.save();
-
     
     prenotazione = new Prenotazione({
         _id: '62962cf7a9ae1c5bed1c4185',
@@ -375,4 +429,72 @@ async function populatesMieGuide(){
  
     await prenotazione.save();
  
+    }
+
+    async function populatesModificaPresenza(){
+        let studente = new Studente({
+            _id: "foglio_rosa00",
+            nome: "Giorgio",
+            cognome: "Rossi",
+            password: 'pass',
+            dataNascita: new Date("2000-05-07T00:00:00.000Z"),
+            telefono: "3459905727",
+            email: "giorgio.rossi@gmail.com"   
+        });
+        await studente.save();
+    
+       studente = new Studente({
+            _id : "foglio_rosa01",
+            password : "pass",
+            nome: "mario",
+            cognome: "bianchi",
+            dataNascita: new Date("04-03-2002"),
+            telefono: "3490901508",
+            email: "mario@gmail.com"    
+        });
+        await studente.save();
+        
+        let prenotazione = new Prenotazione({
+            _id: '62962cf7a9ae1c5bed1c4700',
+            username_studente: "foglio_rosa00",
+            nominativo_studente: "Giorgio Rossi",
+            username_istruttore:"elon.musk",
+            slot: new Date("2022-05-07T18:00:00.000Z"),
+            presenza: true
+        });
+        await prenotazione.save();
+    
+        prenotazione = new Prenotazione({
+            _id: '62962cf7a9ae1c5bed1c4701',
+            username_studente: "foglio_rosa00",
+            nominativo_studente: "Giorgio Rossi",
+            username_istruttore:"elon.musk",
+            slot: new Date("2022-06-07T12:00:00.000Z"),
+            presenza:true
+         });
+        await prenotazione.save();
+
+        prenotazione = new Prenotazione({
+            _id: '62962cf7a9ae1c5bed1c4702',
+            username_studente: "foglio_rosa01",
+            nominativo_studente: "mario bianchi",
+            username_istruttore:"lupo.lucio",
+            slot: new Date("2022-03-07T12:00:00.000Z"),
+            presenza:true
+        });
+        await prenotazione.save();
+        
+        let istruttore = new Istruttore({
+            _id: "elon.musk",
+            password: '12345',
+            telefono: "2345678912", 
+        });
+        await istruttore.save();
+
+        istruttore = new Istruttore({
+            _id: "lupo.lucio",
+            password: '32108',
+            telefono: "5617131", 
+        });
+        await istruttore.save();
     }
