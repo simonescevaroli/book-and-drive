@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --setupFiles dotenv/config --runInBand",
+    "test": "jest --setupFiles dotenv/config -i",
     "start": "node index.js",
     "start_local": "echo use : $ npm run dev",
     "dev": "node -r dotenv/config index.js"
