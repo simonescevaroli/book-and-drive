@@ -26,7 +26,7 @@ router.post('', async function(req, res) {
 	// if user is found and password is right create a token
 	var payload = {
 		username_studente: studente._id,
-        role: "student"
+        role: "studente"
 		// other data encrypted in the token	
 	}
 	var options = {
