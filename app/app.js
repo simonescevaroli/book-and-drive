@@ -11,7 +11,7 @@ const autenticazione_studenti=require('./autenticazione_studenti.js')
 const autenticazione_istruttori=require('./autenticazione_istruttori.js')
 const autenticazione_segreteria=require('./autenticazione_segreteria.js')
 const registrazione=require('./registrazione.js')
-
+const help=require("./help.js")
 const tokenChecker=require('./tokenChecker.js')
 
 //____________________________________________________________________//
@@ -31,7 +31,9 @@ app.use('/api/v1/registrazione',registrazione);
 app.use('/api/v1/istruttori', tokenChecker);
 app.use('/api/v1/prenotazioni', tokenChecker);
 app.use('/api/v1/studenti', tokenChecker);
+app.use('/api/v1/help', tokenChecker);
 
+app.use('/api/v1/help',help)
 app.use('/api/v1/segreteria', segreteria);
 app.use('/api/v1/istruttori', istruttori);
 app.use('/api/v1/prenotazioni', prenotazioni);
