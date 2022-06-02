@@ -19,7 +19,7 @@ function mandaRichiestaStudente(){
     var dataNascita = form["dataNascita"].value;
     var telefono = form["telefono"].value;
     var email = form["email"].value;
-    fetch("http://localhost:8080/api/v1/registrazione/nuovoStudente",{
+    fetch("../api/v1/registrazione/nuovoStudente",{
         method:"POST",
         headers: {
             'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ function mandaRichiestaIstruttore(){
     var password = form["password"].value;
     var telefono = form["telefono"].value;
     var _id = nome +"."+ cognome;
-    fetch("http://localhost:8080/api/v1/registrazione/nuovoIstruttore",{
+    fetch("..api/v1/registrazione/nuovoIstruttore",{
         method:"POST",
         headers: {
             'Content-Type': 'application/json',

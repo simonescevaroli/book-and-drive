@@ -19,7 +19,7 @@ visualizza_mie_guide();
 
 function visualizza_mie_guide(){
     var mie_prenotazioni=document.getElementById("visualizza guide");
-    fetch("http://localhost:8080/api/v1/prenotazioni/mieGuide?token="+getCookie("token"),{
+    fetch("../api/v1/prenotazioni/mieGuide?token="+getCookie("token"),{
         method:"GET",
         headers: {
             'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ function visualizza_mie_guide(){
 function annullaGuida(){
     var box=document.getElementById("box")
     var id_guida=box.value;
-    fetch("http://localhost:8080/api/v1/prenotazioni/annullaGuida?token="+getCookie("token")+"&_id="+id_guida,{
+    fetch("../api/v1/prenotazioni/annullaGuida?token="+getCookie("token")+"&_id="+id_guida,{
         method:"DELETE",
         headers: {
             'Content-Type': 'application/json',

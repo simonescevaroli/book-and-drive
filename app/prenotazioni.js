@@ -127,6 +127,7 @@ router.post('/modificaPresenza', async(req,res)=>{
     const username_istruttore = req.loggedUser.username_istruttore;
     const id_guida= req.query.id_guida;
     var guida=await Prenotazione.findOne({_id:id_guida}).exec();
+  
     if(!guida){
         res.status(404).json({
             seccess: false,
