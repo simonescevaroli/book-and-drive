@@ -75,7 +75,8 @@ router.delete('/annullaGuida', async (req,res)=>{
     var prenotazione = await Prenotazione.findOne({_id: req.query._id})
     if(!prenotazione){
         res.status(500).json({
-            error: 'guida inesistente'})
+            error: 'guida inesistente'});
+        return;
     }
     if(prenotazione.username_studente!=req.loggedUser.username_studente){
         res.status(401).json({
