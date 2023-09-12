@@ -1,4 +1,4 @@
-Team project work for _Software Engineering_ university course (2021-2022)
+Team project work for _Software Engineering_ (_Università di Trento_, 2021-2022)
 
 # Book & Drive
 ## Deploy
